@@ -1,0 +1,18 @@
+# Security Headers for Static Landing Page (Netlify/Vercel)
+# Headers simplifiés pour un site statique sans backend
+
+/*
+  # Protection contre le clickjacking (empêcher l'intégration dans un iframe malveillant)
+  X-Frame-Options: DENY
+  
+  # Protection contre le MIME sniffing (empêcher le serveur de deviner le type de fichier)
+  X-Content-Type-Options: nosniff
+  
+  # Politique de référent (limiter les informations partagées)
+  Referrer-Policy: strict-origin-when-cross-origin
+  
+  # CSP simplifié pour site statique - autorise React (unsafe-inline/unsafe-eval nécessaires pour CRA)
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://api.iconify.design;
+  
+  # HSTS - Décommenter uniquement si HTTPS est configuré
+  # Strict-Transport-Security: max-age=31536000; includeSubDomains; preload

@@ -68,7 +68,7 @@ export default function PerformanceSecurity() {
   return (
     <div className="relative isolate overflow-hidden bg-gray-950 py-20">
       <div className="absolute h-full w-full flex justify-center items-start -top-8">
-        <img src="./triangle-down.svg" alt="triangle-down" className="w-20 white-icon" />
+        <img src="./triangle-down.svg" alt="" aria-hidden="true" className="w-20 white-icon" />
       </div>
 
       <Layout>

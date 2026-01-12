@@ -4,7 +4,7 @@ import { IconEqual } from "@tabler/icons-react";
 
 export default function About() {
   return (
-    <div id="about" className="relative isolate overflow-hidden py-20">
+    <section id="about" className="relative isolate overflow-hidden py-20" aria-label="About me">
       <div className="md:flex -z-10 hidden item-center -rotate-12 -left-6 gap-1 top-[40%] absolute leading-5 ring-1 ring-gray-200 p-2 rounded">
         <div className="md:py-1 py-0 px-6 bg-blue-200"></div>
         <h1 className="text-gray-400 md:text-base text-xs">
@@ -32,7 +32,8 @@ export default function About() {
       <div className="absolute h-full -z-10 w-full flex justify-center items-start -top-8">
         <img
           src="./triangle-down.svg"
-          alt="triangle-down"
+          alt=""
+          aria-hidden="true"
           className="w-20 black-icon"
           loading="lazy"
           width="80"
@@ -75,21 +76,21 @@ export default function About() {
         </div>
 
         {/* About */}
-        <div className="flex-col mt-16 flex items-center justify-center text-center gap-10">
-          <h1 className="text-3xl font-normal">Efficient UX</h1>
+        <section className="flex-col mt-16 flex items-center justify-center text-center gap-10" aria-label="About me">
+          <h2 className="text-3xl font-normal">Efficient UX</h2>
           <div className="bg-indigo-300 rounded-full p-2">
             <PlusIcon className="w-5 h-5" />
           </div>
-          <h1 className="text-3xl font-normal">Beautifull UI</h1>
+          <h2 className="text-3xl font-normal">Beautifull UI</h2>
           <div className="bg-green-300 rounded-full p-2">
             <PlusIcon className="w-5 h-5" />
           </div>
-          <h1 className="text-3xl font-normal">Software Development</h1>
+          <h2 className="text-3xl font-normal">Software Development</h2>
           <div className="bg-red-300 rounded-full p-2">
             <IconEqual className="w-5 h-5" />
           </div>
           <div>
-            <h1 className="text-4xl font-semibold ">Mohamed Lamine KONE</h1>
+            <h2 className="text-4xl font-semibold ">Mohamed Lamine KONE</h2>
             <p className="text-gray-500 max-w-2xl text-lg">
               I am a FullStack Developer and UX/UI Designer with over 4 years of experience. 
               Passionate about the fusion of technical development and design, I create 
@@ -119,8 +120,8 @@ export default function About() {
               </span>
             </div>
           </div>
-        </div>
+        </section>
       </Layout>
-    </div>
+    </section>
   );
 }

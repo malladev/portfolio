@@ -31,17 +31,18 @@ export function Contact() {
     };
 
     return (
-        <div className="relative">
+        <section id="contact" className="relative" aria-label="Contact">
             <div className="absolute h-full -z-10 w-full flex justify-center items-start -top-8">
                 <img
                     src="./triangle-down.svg"
-                    alt="triangle-down"
+                    alt=""
+                    aria-hidden="true"
                     className="w-20 gray-icon"
                 />
             </div>
 
             <Layout>
-                <div id="contact" className="my-20 mx-auto max-w-5xl lg:p-0 sm:px-5">
+                <div className="my-20 mx-auto max-w-5xl lg:p-0 sm:px-5">
                     <ContactBackground className="rounded-[22px] p-4 sm:p-10 bg-white">
                         <p className="text-2xl sm:text-3xl mt-4 mb-2 font-bold text-gray-700">
                             Contacts
@@ -58,7 +59,7 @@ export function Contact() {
                                     rel="noopener noreferrer"
                                     className={`${contact.color} py-2 px-6 w-fit rounded text-sm flex items-center justify-center gap-1 hover:shadow-md hover:-translate-y-1 duration-300 transition-all`}
                                 >
-                                    <img src={contact.icone} alt={contact.name} className="white-icon w-4 h-4" />
+                                    <img src={contact.icone} alt={`Icône ${contact.name}`} className="white-icon w-4 h-4" />
                                     {contact.name}
                                 </a>
                             ))}
@@ -151,6 +152,6 @@ export function Contact() {
                     </ContactBackground>
                 </div>
             </Layout>
-        </div>
+        </section>
     );
 }

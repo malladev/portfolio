@@ -16,20 +16,44 @@
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Mohamed Lamine KONE - FullStack Developer & UX/UI Designer" />
     <meta property="og:description" content="Développeur FullStack passionné avec expertise en création d'applications performantes et sécurisées" />
+    <meta property="og:image" content="https://malla-dev.netlify.app/assets/favicon.webp" />
+    <meta property="og:url" content="https://malla-dev.netlify.app" />
+    <meta property="og:site_name" content="Mohamed Lamine KONE - Portfolio" />
+    <meta property="og:locale" content="fr_FR" />
     
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Mohamed Lamine KONE - FullStack Developer" />
     <meta name="twitter:description" content="Développeur FullStack et UX/UI Designer expert" />
+    <meta name="twitter:image" content="https://malla-dev.netlify.app/assets/favicon.webp" />
+    
+    <!-- Schema.org JSON-LD for rich snippets -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "Mohamed Lamine KONE",
+      "jobTitle": "FullStack Developer & UX/UI Designer",
+      "url": "https://malla-dev.netlify.app",
+      "sameAs": [
+        "https://github.com/malladev",
+        "https://www.linkedin.com/in/mohamed-lamine-kon%C3%A9-b51999193/"
+      ],
+      "description": "Développeur FullStack passionné avec expertise en création d'applications performantes et sécurisées",
+      "knowsAbout": ["React", "Angular", "Spring Boot", "NestJS", "TypeScript", "UX/UI Design"]
+    }
+    </script>
     
     <!-- Performance: Preconnect to external domains -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     
-    <!-- Security Headers -->
-    <meta http-equiv="X-Content-Type-Options" content="nosniff" />
-    <meta http-equiv="X-Frame-Options" content="DENY" />
-    <meta http-equiv="X-XSS-Protection" content="1; mode=block" />
+    <!-- Optimized Google Fonts - Only load necessary weights with font-display: swap -->
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" as="style" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    
+    <!-- Note: Les headers de sécurité sont configurés dans public/_headers pour Netlify/Vercel -->
+    <!-- Les meta tags http-equiv ne sont pas vraiment efficaces, ils doivent être sur le serveur -->
     
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
     <!--

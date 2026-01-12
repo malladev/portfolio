@@ -96,7 +96,7 @@ export const InfiniteScroll = ({
 
                                 <img 
                                   src={item.picture} 
-                                  alt={item.name} 
+                                  alt={`Logo ${item.name}`} 
                                   className="w-8 white-icon" 
                                   loading="lazy"
                                   width="32"
