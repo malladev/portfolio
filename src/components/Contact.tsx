@@ -27,7 +27,8 @@ export function Contact() {
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         // Form submission not implemented yet
-        console.log('Form data:', formData);
+        // TODO: Implement form submission with backend API or email service
+        // For now, form data is captured but not sent
     };
 
     return (
