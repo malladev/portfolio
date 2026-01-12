@@ -48,7 +48,10 @@ export default function MySkills() {
                     <img
                       className="sm:w-10 w-8 object-contain object-left"
                       src={t.picture}
-                      alt={t.name}
+                      alt={`Logo ${t.name}`}
+                      loading="lazy"
+                      width="40"
+                      height="40"
                     />
                     <span className="text-white text-lg sm:text-2xl">
                       {t.name}

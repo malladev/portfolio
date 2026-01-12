@@ -43,8 +43,8 @@ const ProjectCard = memo(({ project }) => (
 
 const firstProject = {
   body: "The TONBA application aims to simplify management of tontines for managers by offering an intuitive interface, rigorous payment tracking and automated notifications.",
-  photo: "./assets/Presentation TONBA.webp",
-  alt: "Presentation maquette TONBA",
+        photo: "./assets/Presentation TONBA.webp",
+        alt: "Interface de l'application TONBA - Application mobile de gestion de tontines avec tableau de bord moderne et intuitif",
   type: "figma",
   title: "TONBA",
   href: "https://www.figma.com/design/t8nBvX1Cbdv8CiADXTNBmh/Tonba-Project?node-id=49-219&t=taAnE1XmTWWmtXaS-1",
@@ -61,7 +61,7 @@ const projects = [
       {
         body: "Integer id nunc sit semper purus...",
         photo: "./assets/Presentation maquette.webp",
-        alt: "Presentation maquette HUB SCOLAIRE",
+        alt: "Maquette de l'application HUB SCOLAIRE - Plateforme mobile de don de manuels scolaires avec interface utilisateur moderne",
         title: "HUB SCOLAIRE",
         href: "https://www.figma.com/design/NHsQZb0WGrWq9n8I9V1KmY/Hub-Projects?node-id=0-1&t=fc6NPTXRCjLxIYEM-1",
         type: "figma",
@@ -75,7 +75,7 @@ const projects = [
       {
         body: "SO SECURIGAZ is a device that aims to preserve and save human lives against domestic accidents due to forgetfulness or gas leakage.",
         photo: "./assets/Presentation maquette So securigaz.webp",
-        alt: "Presentation maquette SO SECURIGAZ",
+        alt: "Maquette de l'application SO SECURIGAZ - Application mobile de sécurité domestique pour prévenir les accidents liés aux fuites de gaz",
         title: "SO SECURIGAZ",
         href: "https://www.figma.com/design/WK7yy83bVnJiMh7tVeRj00/SO-SECURIGAZ-APP-MOBILE?node-id=0-1&t=JmPv0BTkwJuZmbqg-1",
         type: "figma",
@@ -87,8 +87,7 @@ const projects = [
       },
       {
         body: "Road of RAMADAN banner for COJEC.",
-        photo: "./assets/Route de careme COJEC.webp",
-        alt: "Route de careme COJEC",
+        alt: "Bannière publicitaire Route de Carême pour COJEC - Design graphique créatif avec typographie moderne",
         type: "photoshop",
         title: "BANNER COJEC",
         techs: [
@@ -102,7 +101,7 @@ const projects = [
       {
         body: "Presentation flyers of FIRM DIGITAL SARL services.",
         photo: "./assets/FIRM Services.webp",
-        alt: "Presentation Service FIRM DIGITAL",
+        alt: "Flyers de présentation des services FIRM DIGITAL SARL - Design professionnel pour services numériques",
         type: "photoshop",
         title: "FLYERS SERVICES FIRM DIGITAL",
         techs: [
@@ -112,7 +111,7 @@ const projects = [
       {
         body: "FIRM DIGITAL SARL is a dynamic company operating in the digital field.",
         photo: "./assets/Maquette Firm Digital.webp",
-        alt: "Presentation maquette WEB SITE FIRM DIGITAL",
+        alt: "Maquette du site web FIRM DIGITAL - Landing page moderne avec design responsive et interface utilisateur optimisée",
         type: "figma",
         title: "WEBSITE FIRM DIGITAL",
         href: "https://www.figma.com/design/J6MWSoDjoJa1D2LBZyWtQE/FIRM-DIGITAL-LANDING-PAGE?node-id=0-1&t=OPrJxT9qpBXclRrD-1",
@@ -160,7 +159,7 @@ const Portfolio = () => {
   }, []);
 
   return (
-    <div className="relative isolate bg-gray-900 pb-32 ">
+    <section className="relative isolate bg-gray-900 pb-32" aria-label="Portfolio">
       {/* Decorative background */}
       <div
         className="absolute inset-x-0 top-1/2 -z-10 -translate-y-1/2 transform-gpu overflow-hidden opacity-30 blur-3xl"
@@ -187,7 +186,7 @@ const Portfolio = () => {
           {renderProjects()}
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 ProjectCard.displayName = "Portfolio";

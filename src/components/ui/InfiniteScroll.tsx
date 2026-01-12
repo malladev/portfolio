@@ -94,7 +94,14 @@ export const InfiniteScroll = ({
                             ></div>
                             <div className="flex items-center justify-center gap-2">
 
-                                <img src={item.picture} alt={item.name} className="w-8 white-icon" />
+                                <img 
+                                  src={item.picture} 
+                                  alt={`Logo ${item.name}`} 
+                                  className="w-8 white-icon" 
+                                  loading="lazy"
+                                  width="32"
+                                  height="32"
+                                />
                                 <span className=" relative z-20 text-lg font-semibold leading-[1.6] text-white">
                                     {item.name}
                                 </span>

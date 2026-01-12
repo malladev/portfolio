@@ -4,7 +4,7 @@ import { IconEqual } from "@tabler/icons-react";
 
 export default function About() {
   return (
-    <div id="about" className="relative isolate overflow-hidden py-20">
+    <section id="about" className="relative isolate overflow-hidden py-20" aria-label="About me">
       <div className="md:flex -z-10 hidden item-center -rotate-12 -left-6 gap-1 top-[40%] absolute leading-5 ring-1 ring-gray-200 p-2 rounded">
         <div className="md:py-1 py-0 px-6 bg-blue-200"></div>
         <h1 className="text-gray-400 md:text-base text-xs">
@@ -32,8 +32,12 @@ export default function About() {
       <div className="absolute h-full -z-10 w-full flex justify-center items-start -top-8">
         <img
           src="./triangle-down.svg"
-          alt="triangle-down"
+          alt=""
+          aria-hidden="true"
           className="w-20 black-icon"
+          loading="lazy"
+          width="80"
+          height="80"
         />
       </div>
       <div
@@ -53,7 +57,7 @@ export default function About() {
         <div className="flex sm:flex-row flex-col items-center justify-center md:gap-10 lg:gap-32 gap-5">
           <div className="md:h-60 w-full h-44 px-5 text-center border-4 flex flex-col items-center justify-center gap-3 border-green-500 bg-green-100 border-dashed rounded-lg">
             <span className="md:text-6xl sm:text-4xl text-6xl font-semibold text-gray-700 tracking-tighter">
-              2+
+              4+
             </span>
             <h4 className="text-xl text-gray-700">years of experience</h4>
           </div>
@@ -72,36 +76,52 @@ export default function About() {
         </div>
 
         {/* About */}
-        <div className="flex-col mt-16 flex items-center justify-center text-center gap-10">
-          <h1 className="text-3xl font-normal">Efficient UX</h1>
+        <section className="flex-col mt-16 flex items-center justify-center text-center gap-10" aria-label="About me">
+          <h2 className="text-3xl font-normal">Efficient UX</h2>
           <div className="bg-indigo-300 rounded-full p-2">
             <PlusIcon className="w-5 h-5" />
           </div>
-          <h1 className="text-3xl font-normal">Beautifull UI</h1>
+          <h2 className="text-3xl font-normal">Beautifull UI</h2>
           <div className="bg-green-300 rounded-full p-2">
             <PlusIcon className="w-5 h-5" />
           </div>
-          <h1 className="text-3xl font-normal">Software Development</h1>
+          <h2 className="text-3xl font-normal">Software Development</h2>
           <div className="bg-red-300 rounded-full p-2">
             <IconEqual className="w-5 h-5" />
           </div>
           <div>
-            <h1 className="text-4xl font-semibold ">Mohamed Lamine KONE</h1>
+            <h2 className="text-4xl font-semibold ">Mohamed Lamine KONE</h2>
             <p className="text-gray-500 max-w-2xl text-lg">
-              (I am a Junior Software developer and UX/UI designer with over 3
-              years of experience. Passionate about the fusion of development
-              and design, I strive to bring innovative and aesthetic solutions
-              to each project.)
+              I am a FullStack Developer and UX/UI Designer with over 4 years of experience. 
+              Passionate about the fusion of technical development and design, I create 
+              innovative, performant and aesthetic solutions for each project.
             </p>
 
             <p className="text-gray-400 max-w-2xl mt-5">
-              My versatility and sense of listening allow me to quickly adapt to
-              any challenge, while my ability to work in a team encourages
-              dynamic collaboration.
+              My versatility and active listening allow me to quickly adapt to 
+              any technical challenge. Specialized in web and mobile application development 
+              with an approach centered on performance, security and user experience. 
+              My expertise covers frontend development (React, Angular, Next.js), backend 
+              (Spring Boot, NestJS), and UX/UI design (Figma, Design Systems).
             </p>
+            
+            <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
+              <span className="px-4 py-2 bg-indigo-100 text-indigo-700 rounded-full text-sm font-medium">
+                FullStack Development
+              </span>
+              <span className="px-4 py-2 bg-purple-100 text-purple-700 rounded-full text-sm font-medium">
+                UX/UI Design
+              </span>
+              <span className="px-4 py-2 bg-green-100 text-green-700 rounded-full text-sm font-medium">
+                Performance Optimization
+              </span>
+              <span className="px-4 py-2 bg-red-100 text-red-700 rounded-full text-sm font-medium">
+                Security Best Practices
+              </span>
+            </div>
           </div>
-        </div>
+        </section>
       </Layout>
-    </div>
+    </section>
   );
 }
