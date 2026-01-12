@@ -1,0 +1,10 @@
+[build]
+  command = "npm run build"
+  publish = "build"
+
+# Node.js version (Netlify will use .nvmrc if present, but this is a backup)
+[build.environment]
+  NODE_VERSION = "22"
+
+# Headers are configured in public/_headers
+# Sitemap is in public/sitemap.xml
