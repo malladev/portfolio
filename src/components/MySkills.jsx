@@ -1,7 +1,9 @@
 import Layout from "./Layout";
 import { motion } from "framer-motion";
+import { useLanguage } from "../contexts/LanguageContext.jsx";
 
 export default function MySkills() {
+  const { t } = useLanguage();
   return (
     <div id="tech">
       <motion.h1
@@ -14,7 +16,7 @@ export default function MySkills() {
         }}
         className="mt-10 hover:text-indigo-500 hover:duration-500 hover:transition-colors text-white py-4 text-center text-4xl font-bold tracking-tight md:text-6xl"
       >
-        Technologies <span className="from-indigo-500 bg-gradient-to-r to-slate-200 text-transparent bg-clip-text">daily <br /> mastered</span> 
+        {t('skills.title')} <span className="from-indigo-500 bg-gradient-to-r to-slate-200 text-transparent bg-clip-text whitespace-pre-line">{t('skills.titleHighlight')}</span> 
       </motion.h1>
       <Layout>
         <div className="md:mt-20 mt-5">
@@ -34,12 +36,10 @@ export default function MySkills() {
             <div className="grid grid-cols-1 items-start gap-x-8 gap-y-16 lg:grid-cols-2">
               <div className="mx-auto w-full lg:mx-0">
                 <h2 className="text-3xl font-semibold tracking-tight text-white">
-                  Here is an overview of the <span className="text-indigo-500">technologies</span>  I use regularly
+                  {t('skills.subtitle')} <span className="text-indigo-500">{t('skills.subtitleHighlight')}</span> {t('skills.subtitleEnd')}
                 </h2>
                 <p className="mt-6 text-lg leading-8 text-gray-400">
-                  My professional life
-                  is based on the mastery of several tools and languages that
-                  harmoniously converge to give life to my projects.
+                  {t('skills.description')}
                 </p>
               </div>
               <div className="mx-auto grid w-full grid-cols-2 md:grid-cols-3 lg:grid-cols-2 sm:gap-x-10 items-center gap-y-12 sm:gap-y-14 lg:mx-0 lg:max-w-none lg:pl-8">

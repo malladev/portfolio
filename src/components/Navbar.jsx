@@ -1,14 +1,16 @@
 import React, { useEffect, useState, useCallback, useMemo } from "react";
+import { useLanguage } from "../contexts/LanguageContext.jsx";
 
 // Separate navlinks into its own module or keep memoized in the same component
 export const navlinks = [
-  { id: 1, name: "About me", href: "#about" },
-  { id: 4, name: "Projects", href: "#project" },
-  { id: 5, name: "Contacts", href: "#contact" },
+  { id: 1, nameKey: "nav.about", href: "#about" },
+  { id: 2, nameKey: "nav.services", href: "#service" },
+  { id: 4, nameKey: "nav.projects", href: "#project" },
 ];
 
 function Navbar() {
   const [mobileMenu, setMobileMenu] = useState(false);
+  const { language, toggleLanguage, t } = useLanguage();
 
   // Memoize the navlinks array to avoid unnecessary re-renders
   const memoizedNavLinks = useMemo(() => navlinks, []);
@@ -21,6 +23,20 @@ function Navbar() {
         behavior: "smooth", // Enable smooth scroll
       });
     }
+    // Close mobile menu if open
+    setMobileMenu(false);
+  }, []);
+
+  const handleContactClick = useCallback((e) => {
+    e.preventDefault();
+    const targetElement = document.getElementById("contact");
+    if (targetElement) {
+      targetElement.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }
+    setMobileMenu(false);
   }, []);
 
   useEffect(() => {
@@ -66,10 +82,10 @@ function Navbar() {
   }, [mobileMenu]);
 
   return (
-    <nav className="w-full bg-gray-950 mx-auto" role="navigation" aria-label="Navigation principale">
+    <nav className="w-full bg-gray-950 mx-auto" role="navigation" aria-label={t('nav.mainNavigation')}>
       {/* Skip to main content link */}
       <a href="#about" className="skip-to-main">
-        Aller au contenu principal
+        {t('nav.skipToContent')}
       </a>
       
       {/* Desktop Navbar */}
@@ -77,7 +93,7 @@ function Navbar() {
         <a
           href="/"
           className="flex items-center gap-2 cursor-pointer hover:duration-500 hover:transition-transform hover:scale-110 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-950 rounded-lg"
-          aria-label="Retour à l'accueil"
+          aria-label={t('nav.backToHome')}
         >
           <img
             className="rounded-full w-44 object-cover"
@@ -88,18 +104,51 @@ function Navbar() {
             height="176"
           />
         </a>
-        <div className="flex items-center lg:gap-x-16 md:gap-x-10">
+        <div className="flex items-center lg:gap-x-8 md:gap-x-6">
           {memoizedNavLinks.map((nav) => (
             <a
               key={nav.id}
               href={nav.href}
               onClick={(e) => handleLinkClick(e, nav.href)}
               className="text-gray-300 font-medium hover:border-b-2 hover:border-b-indigo-500 hover:text-indigo-500 transition-all duration-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-950 rounded px-2 py-1"
-              aria-label={`Aller à la section ${nav.name}`}
+              aria-label={`${t('nav.goToSection')} ${t(nav.nameKey)}`}
             >
-              {nav.name}
+              {t(nav.nameKey)}
             </a>
           ))}
+          
+          {/* Language Toggle Button */}
+          <button
+            onClick={toggleLanguage}
+            className="flex items-center gap-2 px-3 py-2 text-gray-300 font-medium hover:text-indigo-500 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-950 rounded-lg border border-gray-700 hover:border-indigo-500"
+            aria-label={t('nav.switchLanguage')}
+            title={t('nav.switchLanguage')}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-5 w-5"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth={2}
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"
+              />
+            </svg>
+            <span className="text-sm font-semibold">{language === 'fr' ? 'EN' : 'FR'}</span>
+          </button>
+
+          {/* Contact Me Button */}
+          <button
+            onClick={handleContactClick}
+            className="px-6 py-2 bg-indigo-600 text-white font-semibold rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-950 transition-all duration-300 shadow-md hover:shadow-lg hover:scale-105"
+            aria-label={t('nav.contactMe')}
+          >
+            {t('nav.contactMe')}
+          </button>
         </div>
       </div>
 
@@ -121,7 +170,7 @@ function Navbar() {
             viewBox="0 0 24 24"
             onClick={() => setMobileMenu(true)}
             className="cursor-pointer focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-950 rounded"
-            aria-label="Ouvrir le menu"
+            aria-label={t('nav.openMenu')}
             aria-expanded={mobileMenu}
             aria-controls="mobile-menu"
           >
@@ -140,7 +189,7 @@ function Navbar() {
           className="h-screen z-[999] bg-gray-950 absolute inset-0 p-5"
           role="dialog"
           aria-modal="true"
-          aria-label="Menu de navigation mobile"
+          aria-label={t('nav.mobileMenu')}
         >
           {/* Background effect for mobile menu */}
           <div
@@ -165,7 +214,7 @@ function Navbar() {
               viewBox="0 0 24 24"
               onClick={() => setMobileMenu(!mobileMenu)}
               className="cursor-pointer focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-950 rounded"
-              aria-label="Fermer le menu"
+              aria-label={t('nav.closeMenu')}
             >
               <path
                 fill="currentColor"
@@ -176,21 +225,52 @@ function Navbar() {
           </div>
 
           {/* Mobile Menu Links */}
-          <div className="flex flex-col items-center gap-y-10 pt-20">
+          <div className="flex flex-col items-center gap-y-8 pt-20">
             {memoizedNavLinks.map((nav) => (
               <a
                 key={nav.id}
                 href={nav.href}
-                onClick={(e) => {
-                  setMobileMenu(false); // Close menu on link click
-                  handleLinkClick(e, nav.href);
-                }}
-                className="text-gray-300 font-medium hover:border-b-2 hover:border-b-indigo-500 hover:text-indigo-500 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-950 rounded px-2 py-1"
-                aria-label={`Aller à la section ${nav.name}`}
+                onClick={(e) => handleLinkClick(e, nav.href)}
+                className="text-gray-300 font-medium hover:border-b-2 hover:border-b-indigo-500 hover:text-indigo-500 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-950 rounded px-2 py-1 text-lg"
+                aria-label={`${t('nav.goToSection')} ${t(nav.nameKey)}`}
               >
-                {nav.name}
+                {t(nav.nameKey)}
               </a>
             ))}
+            
+            {/* Language Toggle Button - Mobile */}
+            <button
+              onClick={toggleLanguage}
+              className="flex items-center gap-2 px-4 py-3 text-gray-300 font-medium hover:text-indigo-500 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-950 rounded-lg border border-gray-700 hover:border-indigo-500"
+              aria-label={t('nav.switchLanguage')}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-6 w-6"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={2}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"
+                />
+              </svg>
+              <span className="text-base font-semibold">
+                {language === 'fr' ? 'English' : 'Français'}
+              </span>
+            </button>
+
+            {/* Contact Me Button - Mobile */}
+            <button
+              onClick={handleContactClick}
+              className="px-8 py-3 bg-indigo-600 text-white font-semibold rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-950 transition-all duration-300 shadow-md hover:shadow-lg text-lg"
+              aria-label={t('nav.contactMe')}
+            >
+              {t('nav.contactMe')}
+            </button>
           </div>
         </div>
       )}

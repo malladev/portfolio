@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { ContactBackground } from "./ui/ContactBackground.tsx";
 import Layout from "./Layout.jsx";
+import { useLanguage } from "../contexts/LanguageContext.jsx";
 
 
 const contacts = [
@@ -9,6 +10,7 @@ const contacts = [
 ];
 
 export function Contact() {
+    const { t } = useLanguage();
     const [formData, setFormData] = useState({
         name: '',
         email: '',
@@ -32,7 +34,7 @@ export function Contact() {
     };
 
     return (
-        <section id="contact" className="relative" aria-label="Contact">
+        <section id="contact" className="relative" aria-label={t('contact.ariaLabel')}>
             <div className="absolute h-full -z-10 w-full flex justify-center items-start -top-8">
                 <img
                     src="./triangle-down.svg"
@@ -46,10 +48,10 @@ export function Contact() {
                 <div className="my-20 mx-auto max-w-5xl lg:p-0 sm:px-5">
                     <ContactBackground className="rounded-[22px] p-4 sm:p-10 bg-white">
                         <p className="text-2xl sm:text-3xl mt-4 mb-2 font-bold text-gray-700">
-                            Contacts
+                            {t('contact.title')}
                         </p>
                         <p className="text-base text-gray-500">
-                            Let&apos;s discuss something cool together
+                            {t('contact.subtitle')}
                         </p>
                         <div className="flex items-center gap-2 flex-wrap mt-3 mb-8">
                             {contacts.map((contact) => (
@@ -76,13 +78,13 @@ export function Contact() {
                         {/* Contact Form */}
                         <div className="mt-8 pt-8 border-t border-gray-200">
                             <h3 className="text-xl font-semibold text-gray-800 mb-6">
-                                Send me a message
+                                {t('contact.sendMessage')}
                             </h3>
                             <form onSubmit={handleSubmit} className="space-y-6">
                                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                                     <div>
                                         <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
-                                            Name <span className="text-red-500">*</span>
+                                            {t('contact.form.name')} <span className="text-red-500">{t('contact.form.required')}</span>
                                         </label>
                                         <input
                                             type="text"
@@ -92,12 +94,12 @@ export function Contact() {
                                             onChange={handleChange}
                                             required
                                             className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all"
-                                            placeholder="Your name"
+                                            placeholder={t('contact.form.namePlaceholder')}
                                         />
                                     </div>
                                     <div>
                                         <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
-                                            Email <span className="text-red-500">*</span>
+                                            {t('contact.form.email')} <span className="text-red-500">{t('contact.form.required')}</span>
                                         </label>
                                         <input
                                             type="email"
@@ -107,13 +109,13 @@ export function Contact() {
                                             onChange={handleChange}
                                             required
                                             className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all"
-                                            placeholder="your.email@example.com"
+                                            placeholder={t('contact.form.emailPlaceholder')}
                                         />
                                     </div>
                                 </div>
                                 <div>
                                     <label htmlFor="subject" className="block text-sm font-medium text-gray-700 mb-2">
-                                        Subject
+                                        {t('contact.form.subject')}
                                     </label>
                                     <input
                                         type="text"
@@ -122,12 +124,12 @@ export function Contact() {
                                         value={formData.subject}
                                         onChange={handleChange}
                                         className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all"
-                                        placeholder="What's this about?"
+                                        placeholder={t('contact.form.subjectPlaceholder')}
                                     />
                                 </div>
                                 <div>
                                     <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-2">
-                                        Message <span className="text-red-500">*</span>
+                                        {t('contact.form.message')} <span className="text-red-500">{t('contact.form.required')}</span>
                                     </label>
                                     <textarea
                                         id="message"
@@ -137,7 +139,7 @@ export function Contact() {
                                         required
                                         rows={6}
                                         className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all resize-none"
-                                        placeholder="Tell me about your project..."
+                                        placeholder={t('contact.form.messagePlaceholder')}
                                     />
                                 </div>
                                 <div className="flex justify-end">
@@ -145,7 +147,7 @@ export function Contact() {
                                         type="submit"
                                         className="px-8 py-3 bg-indigo-600 text-white font-semibold rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition-all duration-300 shadow-md hover:shadow-lg"
                                     >
-                                        Send Message
+                                        {t('contact.form.send')}
                                     </button>
                                 </div>
                             </form>

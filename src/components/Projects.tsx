@@ -1,11 +1,13 @@
 import React from "react";
 import { HoverEffect } from "./ui/ProjectUI.tsx";
 import { motion } from "framer-motion";
+import { useLanguage } from "../contexts/LanguageContext.jsx";
 
 
 export function Projects() {
+    const { t } = useLanguage();
     return (
-        <section id="project" className="bg-gray-900 py-10 relative" aria-label="Projects">
+        <section id="project" className="bg-gray-900 py-10 relative" aria-label={t('projects.ariaLabel')}>
             <div className="absolute h-full w-full flex justify-center items-start -top-8">
                 <img src="./triangle-down.svg" alt="" aria-hidden="true" className="w-20 white-icon" />
             </div>
@@ -21,30 +23,31 @@ export function Projects() {
                     }}
                     className=" text-gray-200 py-4 text-center text-4xl font-bold tracking-tight md:text-6xl"
                 >
-                    My <span className="from-indigo-500 bg-gradient-to-r to-gray-200 text-transparent bg-clip-text">projects</span>
+                    {t('projects.title')} <span className="from-indigo-500 bg-gradient-to-r to-gray-200 text-transparent bg-clip-text">{t('projects.titleHighlight')}</span>
                 </motion.h1>
-                <HoverEffect items={projects} />
+                <HoverEffect items={getProjects(t)} />
             </div>
         </section>
     );
 }
 
-export const projects = [
+// Function to get projects with translations
+export const getProjects = (t) => [
     {
-        title: "Assurance Lafia Workflow",
-        description: "A robust web application designed to optimize and streamline business processes within your organization.",
+        title: t('projects.assuranceLafia.title'),
+        description: t('projects.assuranceLafia.description'),
         link: "#",
         techs: [{ name: ["Angular JS"] }, { name: ["Tailwind CSS"] }, { name: ["Spring Boot"] }, { name: ["MySql"] }]
     },
     {
-        title: "E-Shop",
-        description: "This platform was created as part of my learning to master (NEST JS - MongoDB - PRISMA) technologies and build robust and powerful web applications.",
+        title: t('projects.eshop.title'),
+        description: t('projects.eshop.description'),
         link: "#",
         techs: [{ name: ["Next JS"] }, { name: ["Tailwind CSS"] }, { name: ["Nest JS"] }, { name: ["MongoDB"] }, { name: ["Prisma"] }]
     },
     {
-        title: "Hub Scolaire",
-        description: "Mobile application of donation of Textbook",
+        title: t('projects.hubScolaire.title'),
+        description: t('projects.hubScolaire.description'),
         link: "#",
         techs: [{ name: ["React Native"] }, { name: ["Tailwind CSS"] }, { name: ["MongoDB"] }]
     }

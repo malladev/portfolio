@@ -1,8 +1,10 @@
 import { ArrowUpIcon } from "@heroicons/react/24/outline";
 import React, { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useLanguage } from "../contexts/LanguageContext.jsx";
 
 const BackToTopButton = () => {
+    const { t } = useLanguage();
     const [isVisible, setIsVisible] = useState(false);
 
     // Optimized scroll handler with throttling
@@ -63,8 +65,8 @@ const BackToTopButton = () => {
                     exit={{ opacity: 0, scale: 0.5, y: 20 }}
                     onClick={scrollToTop}
                     className="fixed bottom-8 right-8 z-50 bg-indigo-600 hover:bg-indigo-700 text-white p-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-950"
-                    aria-label="Retour en haut de la page"
-                    title="Retour en haut"
+                    aria-label={t('common.backToTop')}
+                    title={t('common.backToTop')}
                 >
                     <ArrowUpIcon className="w-6 h-6" />
                 </motion.button>

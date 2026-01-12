@@ -1,36 +1,27 @@
 import { CheckIcon } from "@heroicons/react/20/solid";
+import { useCallback } from "react";
+import { useLanguage } from "../contexts/LanguageContext.jsx";
 
-const tiers = [
+// Function to get services with translations
+const getServices = (t) => [
   {
-    name: "Web Development",
+    name: t('service.web.title'),
     id: "web",
     href: "#",
     priceMonthly: "+4",
-    description:
-      "From designing modern websites to building robust web applications, I create scalable and performant solutions for your business needs.",
-    features: [
-      "Web application",
-      "Web design",
-      "Backend Development",
-      "RESTful APIs",
-      "Code QA",
-    ],
+    description: t('service.web.description'),
+    features: t('service.web.features'),
+    experience: t('service.web.experience'),
     featured: true,
   },
   {
-    name: "Mobile Development",
+    name: t('service.mobile.title'),
     id: "mobile",
     href: "#",
     priceMonthly: "+4",
-    description:
-      "I develop innovative mobile applications for iOS and Android platforms, delivering seamless user experiences and native performance.",
-    features: [
-      "Mobile application",
-      "Cross-platform development",
-      "UI/UX optimization",
-      "App deployment",
-      "Performance optimization",
-    ],
+    description: t('service.mobile.description'),
+    features: t('service.mobile.features'),
+    experience: t('service.mobile.experience'),
     featured: false,
   },
 ];
@@ -40,6 +31,19 @@ function classNames(...classes) {
 }
 
 export default function Service() {
+  const { t } = useLanguage();
+  // Smooth scroll handler for "Get in touch" button
+  const handleContactClick = useCallback((e) => {
+    e.preventDefault();
+    const targetElement = document.getElementById("contact");
+    if (targetElement) {
+      targetElement.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }
+  }, []);
+
   return (
     <div id="service" className="relative isolate bg-transparent px-6 py-24 sm:py-32 lg:px-8">
       <div
@@ -56,15 +60,14 @@ export default function Service() {
       </div>
       <div className="mx-auto max-w-2xl text-center lg:max-w-4xl">
         <h2 className="text-base font-semibold leading-7 text-indigo-600">
-          My services
+          {t('service.title')}
         </h2>
         <p className="mt-2 font-bold mx-auto max-w-2xl tracking-tight text-gray-900 text-3xl">
-          Explore my services carefully designed to meet your specific needs and
-          improve your user experience.
+          {t('service.subtitle')}
         </p>
       </div>
       <div className="mx-auto mt-16 grid max-w-lg grid-cols-1 items-center gap-y-6 sm:mt-20 sm:gap-y-0 lg:max-w-4xl lg:grid-cols-2">
-        {tiers.map((tier, tierIdx) => (
+        {getServices(t).map((tier, tierIdx) => (
           <div
             key={tier.id}
             className={classNames(
@@ -89,7 +92,7 @@ export default function Service() {
               <span className="text-5xl font-bold tracking-tight text-gray-900">
                 {tier.priceMonthly}
               </span>
-              <span className="text-base text-gray-500">years experience</span>
+              <span className="text-base text-gray-500">{tier.experience}</span>
             </p>
             <p className="mt-6 text-base leading-7 text-gray-600">
               {tier.description}
@@ -110,15 +113,16 @@ export default function Service() {
             </ul>
             <a
               href="#contact"
+              onClick={handleContactClick}
               aria-describedby={tier.id}
               className={classNames(
                 tier.featured
                   ? "bg-indigo-600 text-white shadow hover:bg-indigo-500"
                   : "text-indigo-600 ring-1 ring-inset ring-indigo-200 hover:ring-indigo-300",
-                "mt-8 block rounded-md py-2.5 px-3.5 text-center text-sm font-semibold focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 sm:mt-10"
+                "mt-8 block rounded-md py-2.5 px-3.5 text-center text-sm font-semibold focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 sm:mt-10 cursor-pointer transition-all duration-300"
               )}
             >
-              Get in touch with me
+              {t('service.getInTouch')}
             </a>
           </div>
         ))}
