@@ -2,32 +2,34 @@ import { CheckIcon } from "@heroicons/react/20/solid";
 
 const tiers = [
   {
-    name: "Coding services",
-    id: "code",
+    name: "Web Development",
+    id: "web",
     href: "#",
-    priceMonthly: "+3",
+    priceMonthly: "+4",
     description:
-      "From designing modern websites to programming innovative mobile apps, I am ready to turn your ideas into reality.",
+      "From designing modern websites to building robust web applications, I create scalable and performant solutions for your business needs.",
     features: [
-      "Mobile application",
       "Web application",
       "Web design",
+      "Backend Development",
+      "RESTful APIs",
       "Code QA",
-      "Backend Developement",
     ],
     featured: true,
   },
   {
-    name: "Design services",
-    id: "design",
+    name: "Mobile Development",
+    id: "mobile",
     href: "#",
-    priceMonthly: "+2",
+    priceMonthly: "+4",
     description:
-      "From the design of elegant user interfaces (UI) to the development of fluid user experiences (UX), I redefine the standards of digital aesthetics.",
+      "I develop innovative mobile applications for iOS and Android platforms, delivering seamless user experiences and native performance.",
     features: [
-      "User Interface Design (UI)",
-      "User Experience Design (UX)",
-      "Brand identity",
+      "Mobile application",
+      "Cross-platform development",
+      "UI/UX optimization",
+      "App deployment",
+      "Performance optimization",
     ],
     featured: false,
   },
@@ -56,8 +58,8 @@ export default function Service() {
         <h2 className="text-base font-semibold leading-7 text-indigo-600">
           My services
         </h2>
-        <p className="mt-2 font-bold mx-auto max-w-2xl tracking-tight text-gray-100 text-3xl">
-          Explore my services carefully designed to meet your needs specific and
+        <p className="mt-2 font-bold mx-auto max-w-2xl tracking-tight text-gray-900 text-3xl">
+          Explore my services carefully designed to meet your specific needs and
           improve your user experience.
         </p>
       </div>

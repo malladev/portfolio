@@ -66,18 +66,26 @@ function Navbar() {
   }, [mobileMenu]);
 
   return (
-    <div className="w-full bg-gray-950 mx-auto">
+    <nav className="w-full bg-gray-950 mx-auto" role="navigation" aria-label="Navigation principale">
+      {/* Skip to main content link */}
+      <a href="#about" className="skip-to-main">
+        Aller au contenu principal
+      </a>
+      
       {/* Desktop Navbar */}
       <div className="hidden relative max-w-6xl mx-auto w-full p-4 gap-5 lg:flex items-center justify-between">
         <a
           href="/"
-          className="flex items-center gap-2 cursor-pointer hover:duration-500 hover:transition-transform hover:scale-110"
+          className="flex items-center gap-2 cursor-pointer hover:duration-500 hover:transition-transform hover:scale-110 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-950 rounded-lg"
+          aria-label="Retour à l'accueil"
         >
           <img
             className="rounded-full w-44 object-cover"
             src="./assets/favicon.webp"
-            alt="Profile Photo"
+            alt="Photo de profil - Mohamed Lamine KONE"
             loading="lazy"
+            width="176"
+            height="176"
           />
         </a>
         <div className="flex items-center lg:gap-x-16 md:gap-x-10">
@@ -86,7 +94,8 @@ function Navbar() {
               key={nav.id}
               href={nav.href}
               onClick={(e) => handleLinkClick(e, nav.href)}
-              className="text-gray-300 font-medium hover:border-b-2 hover:border-b-indigo-500 hover:text-indigo-500 transition-all duration-300 hover:scale-105"
+              className="text-gray-300 font-medium hover:border-b-2 hover:border-b-indigo-500 hover:text-indigo-500 transition-all duration-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-950 rounded px-2 py-1"
+              aria-label={`Aller à la section ${nav.name}`}
             >
               {nav.name}
             </a>
@@ -100,8 +109,10 @@ function Navbar() {
           <img
             className="rounded-full w-32 object-cover"
             src="./assets/favicon.webp"
-            alt="Profile Photo"
+            alt="Photo de profil - Mohamed Lamine KONE"
             loading="lazy"
+            width="128"
+            height="128"
           />
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -109,8 +120,10 @@ function Navbar() {
             height="2em"
             viewBox="0 0 24 24"
             onClick={() => setMobileMenu(true)}
-            className="cursor-pointer"
-            aria-label="Open Menu"
+            className="cursor-pointer focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-950 rounded"
+            aria-label="Ouvrir le menu"
+            aria-expanded={mobileMenu}
+            aria-controls="mobile-menu"
           >
             <path
               fill="currentColor"
@@ -122,7 +135,13 @@ function Navbar() {
       </div>
       
       {mobileMenu && (
-        <div className="h-screen z-[999] bg-gray-950 absolute inset-0 p-5">
+        <div 
+          id="mobile-menu"
+          className="h-screen z-[999] bg-gray-950 absolute inset-0 p-5"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Menu de navigation mobile"
+        >
           {/* Background effect for mobile menu */}
           <div
             className="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-2xl sm:-top-80"
@@ -145,8 +164,8 @@ function Navbar() {
               height="2em"
               viewBox="0 0 24 24"
               onClick={() => setMobileMenu(!mobileMenu)}
-              className="cursor-pointer"
-              aria-label="Close Menu"
+              className="cursor-pointer focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-950 rounded"
+              aria-label="Fermer le menu"
             >
               <path
                 fill="currentColor"
@@ -166,7 +185,8 @@ function Navbar() {
                   setMobileMenu(false); // Close menu on link click
                   handleLinkClick(e, nav.href);
                 }}
-                className="text-gray-300 font-medium hover:border-b-2 hover:border-b-indigo-500 hover:text-indigo-500 transition-all duration-300"
+                className="text-gray-300 font-medium hover:border-b-2 hover:border-b-indigo-500 hover:text-indigo-500 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-950 rounded px-2 py-1"
+                aria-label={`Aller à la section ${nav.name}`}
               >
                 {nav.name}
               </a>
@@ -174,7 +194,7 @@ function Navbar() {
           </div>
         </div>
       )}
-    </div>
+    </nav>
   );
 }
 
