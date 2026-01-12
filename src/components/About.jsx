@@ -1,32 +1,34 @@
 import { PlusIcon } from "@heroicons/react/20/solid";
 import Layout from "./Layout";
 import { IconEqual } from "@tabler/icons-react";
+import { useLanguage } from "../contexts/LanguageContext.jsx";
 
 export default function About() {
+  const { t } = useLanguage();
   return (
     <section id="about" className="relative isolate overflow-hidden py-20" aria-label="About me">
       <div className="md:flex -z-10 hidden item-center -rotate-12 -left-6 gap-1 top-[40%] absolute leading-5 ring-1 ring-gray-200 p-2 rounded">
         <div className="md:py-1 py-0 px-6 bg-blue-200"></div>
-        <h1 className="text-gray-400 md:text-base text-xs">
-          UX / UI <br /> Designer
+        <h1 className="text-gray-400 md:text-base text-xs whitespace-pre-line">
+          {t('about.roles.uxui')}
         </h1>
       </div>
       <div className="md:flex -z-10 hidden item-center -rotate-12 -left-6 top-[60%] gap-1 absolute leading-5 ring-1 ring-gray-200 p-2 rounded">
         <div className="md:py-1 py-0 px-6 bg-indigo-400"></div>
-        <h1 className="text-gray-400 md:text-base text-xs">
-          Graphic <br /> Designer
+        <h1 className="text-gray-400 md:text-base text-xs whitespace-pre-line">
+          {t('about.roles.graphic')}
         </h1>
       </div>
       <div className="md:flex -z-10 hidden item-center rotate-12 flex-row-reverse top-[40%] text-right -right-6 gap-1 absolute leading-5 ring-1 ring-gray-200 p-2 rounded">
         <div className="md:py-1 py-0 px-6 bg-yellow-200"></div>
-        <h1 className="text-gray-400 md:text-base text-xs">
-          Web <br /> Developer
+        <h1 className="text-gray-400 md:text-base text-xs whitespace-pre-line">
+          {t('about.roles.web')}
         </h1>
       </div>
       <div className="md:flex -z-10 hidden item-center flex-row-reverse text-right rotate-12 -right-6 top-[60%] gap-1 absolute leading-5 ring-1 ring-gray-200 p-2 rounded">
         <div className="md:py-1 py-0 px-6 bg-green-400"></div>
-        <h1 className="text-gray-400 md:text-base text-xs">
-          Mobile <br /> Developer
+        <h1 className="text-gray-400 md:text-base text-xs whitespace-pre-line">
+          {t('about.roles.mobile')}
         </h1>
       </div>
       <div className="absolute h-full -z-10 w-full flex justify-center items-start -top-8">
@@ -59,64 +61,58 @@ export default function About() {
             <span className="md:text-6xl sm:text-4xl text-6xl font-semibold text-gray-700 tracking-tighter">
               4+
             </span>
-            <h4 className="text-xl text-gray-700">years of experience</h4>
+            <h4 className="text-xl text-gray-700">{t('about.yearsExperience')}</h4>
           </div>
           <div className="md:h-60 w-full h-44 px-5 text-center border-4 flex flex-col items-center justify-center gap-3 border-blue-500 bg-blue-200 border-dashed rounded-lg">
             <span className="md:text-6xl sm:text-4xl text-6xl font-semibold text-gray-700 tracking-tighter">
               20+
             </span>
-            <h4 className="text-xl text-gray-700">accomplishments</h4>
+            <h4 className="text-xl text-gray-700">{t('about.accomplishments')}</h4>
           </div>
           <div className="md:h-60 w-full h-44 px-5 text-center border-4 flex flex-col items-center justify-center gap-3 border-yellow-500 bg-yellow-100 border-dashed rounded-lg">
             <span className="md:text-6xl sm:text-4xl text-6xl font-semibold text-gray-700 tracking-tighter">
               30+
             </span>
-            <h4 className="text-xl text-gray-700">satisfied customers</h4>
+            <h4 className="text-xl text-gray-700">{t('about.satisfiedCustomers')}</h4>
           </div>
         </div>
 
         {/* About */}
-        <section className="flex-col mt-16 flex items-center justify-center text-center gap-10" aria-label="About me">
-          <h2 className="text-3xl font-normal">Efficient UX</h2>
+        <section className="flex-col mt-16 flex items-center justify-center text-center gap-10" aria-label={t('about.ariaLabel')}>
+          <h2 className="text-3xl font-normal">{t('about.efficientUX')}</h2>
           <div className="bg-indigo-300 rounded-full p-2">
             <PlusIcon className="w-5 h-5" />
           </div>
-          <h2 className="text-3xl font-normal">Beautifull UI</h2>
+          <h2 className="text-3xl font-normal">{t('about.beautifulUI')}</h2>
           <div className="bg-green-300 rounded-full p-2">
             <PlusIcon className="w-5 h-5" />
           </div>
-          <h2 className="text-3xl font-normal">Software Development</h2>
+          <h2 className="text-3xl font-normal">{t('about.softwareDevelopment')}</h2>
           <div className="bg-red-300 rounded-full p-2">
             <IconEqual className="w-5 h-5" />
           </div>
           <div>
-            <h2 className="text-4xl font-semibold ">Mohamed Lamine KONE</h2>
+            <h2 className="text-4xl font-semibold ">{t('about.title')}</h2>
             <p className="text-gray-500 max-w-2xl text-lg">
-              I am a FullStack Developer and UX/UI Designer with over 4 years of experience. 
-              Passionate about the fusion of technical development and design, I create 
-              innovative, performant and aesthetic solutions for each project.
+              {t('about.description1')}
             </p>
 
             <p className="text-gray-400 max-w-2xl mt-5">
-              My versatility and active listening allow me to quickly adapt to 
-              any technical challenge. Specialized in web and mobile application development 
-              with an approach centered on performance, security and user experience. 
-              My expertise covers frontend development (React, Angular, Next.js), backend 
-              (Spring Boot, NestJS), and UX/UI design (Figma, Design Systems).
+              {t('about.description2')}
             </p>
             
             <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
               <span className="px-4 py-2 bg-indigo-100 text-indigo-700 rounded-full text-sm font-medium">
-                FullStack Development
+                {t('about.tags.fullstack')}
               </span>
               <span className="px-4 py-2 bg-purple-100 text-purple-700 rounded-full text-sm font-medium">
-                UX/UI Design
+                {t('about.tags.uxui')}
               </span>
               <span className="px-4 py-2 bg-green-100 text-green-700 rounded-full text-sm font-medium">
-                Performance Optimization
+                {t('about.tags.performance')}
               </span>
               <span className="px-4 py-2 bg-red-100 text-red-700 rounded-full text-sm font-medium">
-                Security Best Practices
+                {t('about.tags.security')}
               </span>
             </div>
           </div>

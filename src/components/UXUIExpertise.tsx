@@ -9,51 +9,48 @@ import {
   CheckCircleIcon,
   SparklesIcon,
 } from "@heroicons/react/24/outline";
+import { useLanguage } from "../contexts/LanguageContext.jsx";
 
-const methodologies = [
+// Function to get methodologies with translations
+const getMethodologies = (t) => [
   {
-    title: "User Research",
-    description: "In-depth analysis of user needs with personas, user journeys and usability testing",
+    title: t('uxui.methodologies.userResearch.title'),
+    description: t('uxui.methodologies.userResearch.description'),
     icon: <UserGroupIcon className="w-6 h-6" />,
     color: "from-blue-500 to-cyan-500",
   },
   {
-    title: "Design Thinking",
-    description: "Iterative process of empathy, definition, ideation, prototyping and testing for innovative solutions",
+    title: t('uxui.methodologies.designThinking.title'),
+    description: t('uxui.methodologies.designThinking.description'),
     icon: <LightBulbIcon className="w-6 h-6" />,
     color: "from-purple-500 to-pink-500",
   },
   {
-    title: "Design System",
-    description: "Creation of consistent design systems with reusable components and comprehensive guidelines",
+    title: t('uxui.methodologies.designSystem.title'),
+    description: t('uxui.methodologies.designSystem.description'),
     icon: <PaintBrushIcon className="w-6 h-6" />,
     color: "from-green-500 to-emerald-500",
   },
   {
-    title: "Responsive Design",
-    description: "Adaptive interfaces optimized for all devices with mobile-first approach",
+    title: t('uxui.methodologies.responsiveDesign.title'),
+    description: t('uxui.methodologies.responsiveDesign.description'),
     icon: <DevicePhoneMobileIcon className="w-6 h-6" />,
     color: "from-orange-500 to-red-500",
   },
 ];
 
-const uxPrinciples = [
-  "Accessibility (WCAG 2.1 AA)",
-  "Performance & Optimization",
-  "Smooth micro-interactions",
-  "Clear visual hierarchy",
-  "Contrast and readability",
-  "Intuitive navigation",
-];
-
-const designTools = [
-  { name: "Figma", proficiency: "Expert", projects: "50+ projects" },
-  { name: "Adobe Photoshop", proficiency: "Advanced", projects: "30+ projects" },
-  { name: "Prototyping", proficiency: "Expert", projects: "40+ prototypes" },
-  { name: "Design Systems", proficiency: "Advanced", projects: "10+ systems" },
+// Function to get design tools with translations
+const getDesignTools = (t) => [
+  { name: t('uxui.tools.figma.name'), proficiency: t('uxui.tools.figma.proficiency'), projects: t('uxui.tools.figma.projects') },
+  { name: t('uxui.tools.prototyping.name'), proficiency: t('uxui.tools.prototyping.proficiency'), projects: t('uxui.tools.prototyping.projects') },
 ];
 
 export default function UXUIExpertise() {
+  const { t } = useLanguage();
+  const methodologies = getMethodologies(t);
+  const designTools = getDesignTools(t);
+  const uxPrinciples = t('uxui.principles.items');
+  
   return (
     <div className="relative isolate overflow-hidden bg-white py-20">
       <div className="absolute h-full w-full flex justify-center items-start -top-8">
@@ -82,14 +79,13 @@ export default function UXUIExpertise() {
           className="text-center mb-16"
         >
           <h2 className="text-4xl md:text-6xl font-bold tracking-tight">
-            <span className="text-gray-900">Expertise </span>
+            <span className="text-gray-900">{t('uxui.title')} </span>
             <span className="from-indigo-500 bg-gradient-to-r to-purple-500 text-transparent bg-clip-text">
-              UX/UI Design
+              {t('uxui.titleHighlight')}
             </span>
           </h2>
           <p className="mt-6 text-lg text-gray-600 max-w-2xl mx-auto">
-            A user-centered approach combining research, design and prototyping to create 
-            memorable and performant digital experiences
+            {t('uxui.subtitle')}
           </p>
         </motion.div>
 
@@ -126,7 +122,7 @@ export default function UXUIExpertise() {
           >
             <div className="flex items-center gap-3 mb-6">
               <SparklesIcon className="w-8 h-8 text-indigo-400" />
-              <h3 className="text-2xl font-bold text-white">UX/UI Principles</h3>
+              <h3 className="text-2xl font-bold text-white">{t('uxui.principles.title')}</h3>
             </div>
             <ul className="space-y-4">
               {uxPrinciples.map((principle, idx) => (
@@ -155,7 +151,7 @@ export default function UXUIExpertise() {
           >
             <div className="flex items-center gap-3 mb-6">
               <PaintBrushIcon className="w-8 h-8 text-indigo-600" />
-              <h3 className="text-2xl font-bold text-gray-900">Design Tools</h3>
+              <h3 className="text-2xl font-bold text-gray-900">{t('uxui.tools.title')}</h3>
             </div>
             <div className="space-y-4">
               {designTools.map((tool, idx) => (

@@ -4,12 +4,15 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import BackToTopButton from './components/BackToTop.tsx';
+import { LanguageProvider } from './contexts/LanguageContext.jsx';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <App />
-    <BackToTopButton />
+    <LanguageProvider>
+      <App />
+      <BackToTopButton />
+    </LanguageProvider>
   </React.StrictMode>
 );
 

@@ -9,62 +9,69 @@ import {
   ServerIcon,
   EyeIcon,
 } from "@heroicons/react/24/outline";
+import { useLanguage } from "../contexts/LanguageContext.jsx";
 
-const performanceFeatures = [
+// Function to get performance features with translations
+const getPerformanceFeatures = (t) => [
   {
-    title: "Code Splitting & Lazy Loading",
-    description: "Bundle optimization with dynamic component loading to reduce initial load time",
+    title: t('performanceSecurity.performance.features.codeSplitting.title'),
+    description: t('performanceSecurity.performance.features.codeSplitting.description'),
     icon: <BoltIcon className="w-6 h-6" />,
-    metrics: "60% reduction in initial bundle",
+    metrics: t('performanceSecurity.performance.features.codeSplitting.metrics'),
   },
   {
-    title: "Image Optimization",
-    description: "Use of modern formats (WebP, AVIF), lazy loading and responsive images for optimal performance",
+    title: t('performanceSecurity.performance.features.imageOptimization.title'),
+    description: t('performanceSecurity.performance.features.imageOptimization.description'),
     icon: <EyeIcon className="w-6 h-6" />,
-    metrics: "95+ Lighthouse Performance",
+    metrics: t('performanceSecurity.performance.features.imageOptimization.metrics'),
   },
   {
-    title: "Caching Strategy",
-    description: "Implementation of smart caching strategies (Service Workers, HTTP caching) for a smooth experience",
+    title: t('performanceSecurity.performance.features.caching.title'),
+    description: t('performanceSecurity.performance.features.caching.description'),
     icon: <ServerIcon className="w-6 h-6" />,
-    metrics: "Load time < 2s",
+    metrics: t('performanceSecurity.performance.features.caching.metrics'),
   },
   {
-    title: "Performance Monitoring",
-    description: "Continuous monitoring with Web Vitals, Lighthouse CI and analytics to maintain optimal performance",
+    title: t('performanceSecurity.performance.features.monitoring.title'),
+    description: t('performanceSecurity.performance.features.monitoring.description'),
     icon: <ChartBarIcon className="w-6 h-6" />,
-    metrics: "Optimized Core Web Vitals",
+    metrics: t('performanceSecurity.performance.features.monitoring.metrics'),
   },
 ];
 
-const securityFeatures = [
+// Function to get security features with translations
+const getSecurityFeatures = (t) => [
   {
-    title: "Secure Coding Practices",
-    description: "Application of OWASP principles, input validation, protection against XSS and SQL injection",
+    title: t('performanceSecurity.security.features.codingPractices.title'),
+    description: t('performanceSecurity.security.features.codingPractices.description'),
     icon: <LockClosedIcon className="w-6 h-6" />,
-    practices: ["Input Validation", "Output Encoding", "CSRF Protection"],
+    practices: t('performanceSecurity.security.features.codingPractices.practices'),
   },
   {
-    title: "Authentication & Authorization",
-    description: "Implementation of secure authentication systems with JWT, OAuth 2.0 and session management",
+    title: t('performanceSecurity.security.features.authentication.title'),
+    description: t('performanceSecurity.security.features.authentication.description'),
     icon: <ShieldCheckIcon className="w-6 h-6" />,
-    practices: ["JWT Tokens", "OAuth 2.0", "Session Management"],
+    practices: t('performanceSecurity.security.features.authentication.practices'),
   },
   {
-    title: "Data Protection",
-    description: "Encryption of sensitive data, GDPR compliance and best practices for user data management",
+    title: t('performanceSecurity.security.features.dataProtection.title'),
+    description: t('performanceSecurity.security.features.dataProtection.description'),
     icon: <LockClosedIcon className="w-6 h-6" />,
-    practices: ["Data Encryption", "GDPR Compliance", "Privacy by Design"],
+    practices: t('performanceSecurity.security.features.dataProtection.practices'),
   },
   {
-    title: "Security Headers",
-    description: "Configuration of security headers (CSP, HSTS, X-Frame-Options) to protect against common attacks",
+    title: t('performanceSecurity.security.features.headers.title'),
+    description: t('performanceSecurity.security.features.headers.description'),
     icon: <ShieldCheckIcon className="w-6 h-6" />,
-    practices: ["CSP Headers", "HSTS", "XSS Protection"],
+    practices: t('performanceSecurity.security.features.headers.practices'),
   },
 ];
 
 export default function PerformanceSecurity() {
+  const { t } = useLanguage();
+  const performanceFeatures = getPerformanceFeatures(t);
+  const securityFeatures = getSecurityFeatures(t);
+
   return (
     <div className="relative isolate overflow-hidden bg-gray-950 py-20">
       <div className="absolute h-full w-full flex justify-center items-start -top-8">
@@ -80,13 +87,13 @@ export default function PerformanceSecurity() {
           className="text-center mb-16"
         >
           <h2 className="text-4xl md:text-6xl font-bold tracking-tight">
-            <span className="text-white">Performance & </span>
+            <span className="text-white">{t('performanceSecurity.title')} </span>
             <span className="from-indigo-500 bg-gradient-to-r to-green-500 text-transparent bg-clip-text">
-              Security
+              {t('performanceSecurity.titleHighlight')}
             </span>
           </h2>
           <p className="mt-6 text-lg text-gray-400 max-w-2xl mx-auto">
-            A proactive approach to ensure fast, secure and industry-standard compliant applications
+            {t('performanceSecurity.subtitle')}
           </p>
         </motion.div>
 
@@ -145,7 +152,7 @@ export default function PerformanceSecurity() {
             <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-gradient-to-r from-red-500 to-pink-500">
               <ShieldCheckIcon className="w-6 h-6 text-white" />
             </div>
-            <h3 className="text-3xl font-bold text-white">Security & Compliance</h3>
+            <h3 className="text-3xl font-bold text-white">{t('performanceSecurity.security.title')}</h3>
           </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -193,8 +200,8 @@ export default function PerformanceSecurity() {
           <div className="flex items-center justify-center gap-4 mb-4">
             <ShieldCheckIcon className="w-12 h-12 text-white" />
             <div>
-              <div className="text-4xl font-bold text-white mb-1">A+ Security Rating</div>
-              <div className="text-gray-200">Compliance with OWASP & GDPR standards</div>
+              <div className="text-4xl font-bold text-white mb-1">{t('performanceSecurity.security.rating.title')}</div>
+              <div className="text-gray-200">{t('performanceSecurity.security.rating.subtitle')}</div>
             </div>
           </div>
         </motion.div>
