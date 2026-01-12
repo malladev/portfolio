@@ -1,4 +1,5 @@
 import { CheckIcon } from "@heroicons/react/20/solid";
+import { useCallback } from "react";
 
 const tiers = [
   {
@@ -40,6 +41,18 @@ function classNames(...classes) {
 }
 
 export default function Service() {
+  // Smooth scroll handler for "Get in touch" button
+  const handleContactClick = useCallback((e) => {
+    e.preventDefault();
+    const targetElement = document.getElementById("contact");
+    if (targetElement) {
+      targetElement.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }
+  }, []);
+
   return (
     <div id="service" className="relative isolate bg-transparent px-6 py-24 sm:py-32 lg:px-8">
       <div
@@ -110,12 +123,13 @@ export default function Service() {
             </ul>
             <a
               href="#contact"
+              onClick={handleContactClick}
               aria-describedby={tier.id}
               className={classNames(
                 tier.featured
                   ? "bg-indigo-600 text-white shadow hover:bg-indigo-500"
                   : "text-indigo-600 ring-1 ring-inset ring-indigo-200 hover:ring-indigo-300",
-                "mt-8 block rounded-md py-2.5 px-3.5 text-center text-sm font-semibold focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 sm:mt-10"
+                "mt-8 block rounded-md py-2.5 px-3.5 text-center text-sm font-semibold focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 sm:mt-10 cursor-pointer transition-all duration-300"
               )}
             >
               Get in touch with me
