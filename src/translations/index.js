@@ -64,13 +64,13 @@ export const translations = {
       ariaLabel: "Projets",
       title: "Mes",
       titleHighlight: "projets",
-      assuranceLafia: {
-        title: "Assurance Lafia Workflow",
-        description: "Une application web robuste conçue pour optimiser et rationaliser les processus métier au sein de votre organisation.",
+      telecelUssd: {
+        title: "TELECEL USSD ",
+        description: "Une application mobile facilitant l’utilisation des codes USSD pour l’opérateur téléphonique Telecel (Mali). Il s’agit d’une application officieuse que j’ai développée pour un usage personnel afin d’optimiser et automatiser les saisies de codes USSD, avec une attention particulière portée à l’ergonomie et à la rapidité d’exécution",
       },
-      eshop: {
-        title: "E-Shop",
-        description: "Cette plateforme a été créée dans le cadre de mon apprentissage pour maîtriser les technologies (NEST JS - MongoDB - PRISMA) et construire des applications web robustes et puissantes.",
+      evimo: {
+        title: "EVIMO",
+        description: "EVIMO, une plateforme de ticketing d’événements, intégrant la gestion des billets, la sécurisation des accès et une logique orientée expérience utilisateur",
       },
       hubScolaire: {
         title: "Hub Scolaire",
@@ -370,13 +370,13 @@ export const translations = {
       ariaLabel: "Projects",
       title: "My",
       titleHighlight: "projects",
-      assuranceLafia: {
-        title: "Assurance Lafia Workflow",
-        description: "A robust web application designed to optimize and streamline business processes within your organization.",
+      telecelUssd: {
+        title: "TELECEL USSD",
+        description: "A mobile application facilitating the use of USSD codes for the telephone operator Telecel (Mali). It is an informal application that I developed for personal use to optimize and automate the entry of USSD codes, with particular attention paid to ergonomics and speed of execution",
       },
-      eshop: {
-        title: "E-Shop",
-        description: "This platform was created as part of my learning to master (NEST JS - MongoDB - PRISMA) technologies and build robust and powerful web applications.",
+      evimo: {
+        title: "EVIMO",
+        description: "EVIMO, a ticketing platform, integrating ticket management, access security and user experience logic",
       },
       hubScolaire: {
         title: "Hub Scolaire",

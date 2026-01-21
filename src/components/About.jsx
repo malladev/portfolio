@@ -93,11 +93,11 @@ export default function About() {
           </div>
           <div>
             <h2 className="text-4xl font-semibold ">{t('about.title')}</h2>
-            <p className="text-gray-500 max-w-2xl text-lg">
+            <p className="text-gray-500 max-w-4xl text-lg">
               {t('about.description1')}
             </p>
 
-            <p className="text-gray-400 max-w-2xl mt-5">
+            <p className="text-gray-400 max-w-4xl mt-5">
               {t('about.description2')}
             </p>
             
