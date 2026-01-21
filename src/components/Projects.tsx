@@ -34,16 +34,16 @@ export function Projects() {
 // Function to get projects with translations
 export const getProjects = (t) => [
     {
-        title: t('projects.assuranceLafia.title'),
-        description: t('projects.assuranceLafia.description'),
-        link: "#",
-        techs: [{ name: ["Angular JS"] }, { name: ["Tailwind CSS"] }, { name: ["Spring Boot"] }, { name: ["MySql"] }]
+        title: t('projects.telecelUssd.title'),
+        description: t('projects.telecelUssd.description'),
+        link: "https://apkpure.com/p/com.malladev.telecel_ussd",
+        techs: [{ name: ["Flutter"] }, { name: ["Dart"] }, { name: ["Shared Preferences"] }, { name: ["USSD"] }]
     },
     {
-        title: t('projects.eshop.title'),
-        description: t('projects.eshop.description'),
-        link: "#",
-        techs: [{ name: ["Next JS"] }, { name: ["Tailwind CSS"] }, { name: ["Nest JS"] }, { name: ["MongoDB"] }, { name: ["Prisma"] }]
+        title: t('projects.evimo.title'),
+        description: t('projects.evimo.description'),
+        link: "https://apkpure.com/p/com.malladev.evimomobile",
+        techs: [{ name: ["Flutter"] }, { name: ["Dart"] }, { name: ["Firebase"] }, { name: ["Firebase SDK Admin"] }, { name: ["Shared Preferences"] }, { name: ["Flutter Secure Storage"] }]
     },
     {
         title: t('projects.hubScolaire.title'),

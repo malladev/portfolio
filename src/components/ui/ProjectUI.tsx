@@ -49,7 +49,7 @@ export const HoverEffect = ({
                             />
                         )}
                     </AnimatePresence>
-                    <Card>
+                    <Card link={item.link}>
                         <CardTitle>{item.title}</CardTitle>
                         <CardDescription>{item.description}</CardDescription>
                         <div className="abolute bottom-10 mt-4 flex items-center gap-1 flex-wrap">
@@ -67,9 +67,11 @@ export const HoverEffect = ({
 export const Card = ({
     className,
     children,
+    link,
 }: {
     className?: string;
     children: React.ReactNode;
+    link: string;
 }) => {
     return (
         <div
@@ -81,9 +83,9 @@ export const Card = ({
             <div className="relative z-30">
                 <div className="p-4">{children}</div>
             </div>
-            <span className="absolute top-3 z-30 right-3 bg-indigo-400 rounded-lg p-1">
-                <ArrowUpRightIcon className="w-4 text-white" />
-            </span>
+            <a href={link} target="_blank" rel="noreferrer" className="absolute top-3 z-30 right-3 bg-indigo-400 rounded-lg p-1">
+                <ArrowUpRightIcon className="w-4 text-white hover:text-gray-300 transition-all duration-300" />
+            </a>
         </div>
     );
 };
