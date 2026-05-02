@@ -72,9 +72,9 @@ export const translations = {
         title: "EVIMO",
         description: "EVIMO, une plateforme de ticketing d’événements, intégrant la gestion des billets, la sécurisation des accès et une logique orientée expérience utilisateur",
       },
-      hubScolaire: {
-        title: "Hub Scolaire",
-        description: "Application mobile de don de manuels scolaires",
+      documali: {
+        title: "DocuMali",
+        description: "DocuMali centralise les procédures, les documents à fournir et les étapes à suivre. Moins de stress, moins de déplacements inutiles : tout est expliqué clairement sur votre téléphone.",
       },
     },
     
@@ -129,39 +129,6 @@ export const translations = {
       getInTouch: "Me contacter",
     },
     
-    // Portfolio Section
-    portfolio: {
-      ariaLabel: "Portfolio",
-      title: "Portfolio",
-      subtitle: "Je crée des applications et des designs UI pour de nombreuses entreprises et d'autres clients.",
-      view: "Voir",
-      projects: {
-        tonba: {
-          title: "TONBA",
-          description: "L'application TONBA vise à simplifier la gestion des tontines pour les gestionnaires en offrant une interface intuitive, un suivi rigoureux des paiements et des notifications automatisées.",
-        },
-        hubScolaire: {
-          title: "HUB SCOLAIRE",
-          description: "Application mobile de don de manuels scolaires",
-        },
-        soSecurigaz: {
-          title: "SO SECURIGAZ",
-          description: "SO SECURIGAZ est un dispositif qui vise à préserver et sauver des vies humaines contre les accidents domestiques dus à l'oubli ou aux fuites de gaz.",
-        },
-        bannerCojec: {
-          title: "BANNIÈRE COJEC",
-          description: "Bannière publicitaire Route de Carême pour COJEC.",
-        },
-        firmServices: {
-          title: "FLYERS SERVICES FIRM DIGITAL",
-          description: "Flyers de présentation des services FIRM DIGITAL SARL.",
-        },
-        firmWebsite: {
-          title: "SITE WEB FIRM DIGITAL",
-          description: "FIRM DIGITAL SARL est une entreprise dynamique opérant dans le domaine numérique.",
-        },
-      },
-    },
     
     // MySkills Section
     skills: {
@@ -378,10 +345,10 @@ export const translations = {
         title: "EVIMO",
         description: "EVIMO, a ticketing platform, integrating ticket management, access security and user experience logic",
       },
-      hubScolaire: {
-        title: "Hub Scolaire",
-        description: "Mobile application of donation of Textbook",
-      },
+      documali: {
+        title: "DocuMali",
+        description: "DocuMali centralizes the procedures, documents to be provided and steps to follow. Less stress, less unnecessary travel: everything is explained clearly on your phone.",
+        },
     },
     
     // Contact Section
@@ -435,39 +402,6 @@ export const translations = {
       getInTouch: "Get in touch with me",
     },
     
-    // Portfolio Section
-    portfolio: {
-      ariaLabel: "Portfolio",
-      title: "Portfolio",
-      subtitle: "I create applications and UI Design for a lot of company and others.",
-      view: "view",
-      projects: {
-        tonba: {
-          title: "TONBA",
-          description: "The TONBA application aims to simplify management of tontines for managers by offering an intuitive interface, rigorous payment tracking and automated notifications.",
-        },
-        hubScolaire: {
-          title: "HUB SCOLAIRE",
-          description: "Mobile application of donation of Textbook",
-        },
-        soSecurigaz: {
-          title: "SO SECURIGAZ",
-          description: "SO SECURIGAZ is a device that aims to preserve and save human lives against domestic accidents due to forgetfulness or gas leakage.",
-        },
-        bannerCojec: {
-          title: "BANNER COJEC",
-          description: "Road of RAMADAN banner for COJEC.",
-        },
-        firmServices: {
-          title: "FLYERS SERVICES FIRM DIGITAL",
-          description: "Presentation flyers of FIRM DIGITAL SARL services.",
-        },
-        firmWebsite: {
-          title: "WEBSITE FIRM DIGITAL",
-          description: "FIRM DIGITAL SARL is a dynamic company operating in the digital field.",
-        },
-      },
-    },
     
     // MySkills Section
     skills: {

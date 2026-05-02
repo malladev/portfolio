@@ -46,9 +46,9 @@ export const getProjects = (t) => [
         techs: [{ name: ["Flutter"] }, { name: ["Dart"] }, { name: ["Firebase"] }, { name: ["Firebase SDK Admin"] }, { name: ["Shared Preferences"] }, { name: ["Flutter Secure Storage"] }]
     },
     {
-        title: t('projects.hubScolaire.title'),
-        description: t('projects.hubScolaire.description'),
-        link: "#",
-        techs: [{ name: ["React Native"] }, { name: ["Tailwind CSS"] }, { name: ["MongoDB"] }]
+        title: t('projects.documali.title'),
+        description: t('projects.documali.description'),
+        link: "https://documali.vercel.app/",
+        techs: [{ name: ["Flutter"] }, { name: ["Tailwind CSS"] }, { name: ["Next Js"] }, { name: ["Firebase"] }, { name: ["CloudFare"] }]
     }
 ];
