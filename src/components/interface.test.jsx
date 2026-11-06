@@ -4,6 +4,7 @@ import App from '../App';
 import Navbar from './Navbar';
 import Contact, { buildMailto } from './Contact';
 import Projects from './Projects';
+import Recent from './Recent';
 import { LanguageProvider } from '../contexts/LanguageContext';
 
 const withLanguage = (ui) => render(<LanguageProvider>{ui}</LanguageProvider>);
@@ -106,6 +107,24 @@ describe('projects', () => {
       'href',
       'https://apkpure.com/p/com.malladev.evimomobile'
     );
-    expect(screen.getAllByRole('link', { name: /Ouvrir le projet/ })).toHaveLength(3);
+    expect(screen.getAllByRole('link', { name: /Ouvrir le projet/ })).toHaveLength(5);
+    expect(screen.getByRole('link', { name: /La Claire Fontaine/ })).toHaveAttribute(
+      'href',
+      'https://www.claire-fontaine.org/'
+    );
+  });
+
+  test('flag the two recent projects as still in development', () => {
+    withLanguage(<Recent />);
+
+    expect(screen.getByRole('link', { name: /BKO Gosp·N Grill/ })).toHaveAttribute(
+      'href',
+      'https://bko-gosp-grill.vercel.app/'
+    );
+    expect(screen.getByRole('link', { name: /MILLE EMOTIONS/ })).toHaveAttribute(
+      'href',
+      'https://mille-emotions.vercel.app/'
+    );
+    expect(screen.getAllByText('En développement')).toHaveLength(2);
   });
 });

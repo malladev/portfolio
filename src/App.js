@@ -7,6 +7,7 @@ import TechBand from "./components/TechBand.jsx";
 const About = lazy(() => import("./components/About.jsx"));
 const Process = lazy(() => import("./components/Process.jsx"));
 const Projects = lazy(() => import("./components/Projects.jsx"));
+const Recent = lazy(() => import("./components/Recent.jsx"));
 const Services = lazy(() => import("./components/Services.jsx"));
 const Contact = lazy(() => import("./components/Contact.jsx"));
 const Footer = lazy(() => import("./components/Footer.jsx"));
@@ -33,6 +34,7 @@ function App() {
           <About />
           <Process />
           <Projects />
+          <Recent />
           <Services />
           <Contact />
           <ScrollToHash />

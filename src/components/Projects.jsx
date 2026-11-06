@@ -4,15 +4,40 @@ import { ArrowUpRightIcon } from "@heroicons/react/20/solid";
 import { useLanguage } from "../contexts/LanguageContext.jsx";
 import { cn } from "../utils/cn.ts";
 import { reveal } from "../utils/motion.ts";
+import { BrowserFrame } from "./ui/BrowserFrame.jsx";
 import { SectionLabel } from "./ui/SectionLabel.jsx";
 import { ChecklistVignette, DialVignette, TicketVignette } from "./ui/Vignettes.jsx";
 
 const getProjects = (t) => [
   {
-    ...t('projects.telecelUssd'),
-    link: "https://apkpure.com/p/com.malladev.telecel_ussd",
-    techs: ["Flutter", "Dart", "Shared Preferences", "USSD"],
-    Vignette: DialVignette,
+    ...t('projects.claireFontaine'),
+    link: "https://www.claire-fontaine.org/",
+    host: "claire-fontaine.org",
+    techs: ["Next.js", "Google Maps"],
+    image: {
+      src: "./assets/projects/claire-fontaine.webp",
+      width: 1600,
+      height: 770,
+      alt: t('projects.claireFontaine.alt'),
+    },
+  },
+  {
+    ...t('projects.lakanaPlus'),
+    link: "https://lakanaplus.netlify.app/",
+    host: "lakanaplus.netlify.app",
+    techs: ["Next.js", "Netlify"],
+    image: {
+      src: "./assets/projects/lakana-plus.webp",
+      width: 1600,
+      height: 834,
+      alt: t('projects.lakanaPlus.alt'),
+    },
+  },
+  {
+    ...t('projects.documali'),
+    link: "https://documali.vercel.app/",
+    techs: ["Flutter", "Next.js", "Tailwind CSS", "Firebase", "Cloudflare"],
+    Vignette: ChecklistVignette,
   },
   {
     ...t('projects.evimo'),
@@ -21,10 +46,10 @@ const getProjects = (t) => [
     Vignette: TicketVignette,
   },
   {
-    ...t('projects.documali'),
-    link: "https://documali.vercel.app/",
-    techs: ["Flutter", "Next.js", "Tailwind CSS", "Firebase", "Cloudflare"],
-    Vignette: ChecklistVignette,
+    ...t('projects.telecelUssd'),
+    link: "https://apkpure.com/p/com.malladev.telecel_ussd",
+    techs: ["Flutter", "Dart", "Shared Preferences", "USSD"],
+    Vignette: DialVignette,
   },
 ];
 
@@ -51,7 +76,8 @@ function ProjectCard({ project, index, onFocus, className }) {
     <article
       onFocus={onFocus}
       className={cn(
-        "group relative grid overflow-hidden rounded-3xl border border-paper/10 bg-ink-raised transition-colors duration-200 hover:border-paper/30 lg:grid-cols-2",
+        "group relative grid overflow-hidden rounded-3xl border border-paper/10 bg-ink-raised transition-colors duration-200 hover:border-paper/30",
+        project.image ? "lg:grid-cols-[minmax(0,5fr)_minmax(0,8fr)]" : "lg:grid-cols-2",
         className
       )}
     >
@@ -63,7 +89,7 @@ function ProjectCard({ project, index, onFocus, className }) {
         <p className="mt-4 leading-relaxed text-paper-muted">{project.description}</p>
 
         <ul className="mt-6 flex flex-wrap gap-2 font-mono text-xs">
-          {project.techs.map((tech) => (
+          {[...project.techs, ...(project.features ?? [])].map((tech) => (
             <li key={tech} className="rounded-full border border-paper/15 px-3 py-1 text-paper-muted">
               {tech}
             </li>
@@ -76,8 +102,8 @@ function ProjectCard({ project, index, onFocus, className }) {
         </p>
       </div>
 
-      <div className="flex items-center justify-center bg-paper/[0.03] p-8">
-        <Vignette />
+      <div className="flex items-center justify-center bg-paper/[0.03] p-5 sm:p-8">
+        {project.image ? <BrowserFrame image={project.image} host={project.host} /> : <Vignette />}
       </div>
 
       {/* The whole card is the link: it looks like one target, so it behaves like one */}
@@ -145,7 +171,10 @@ function PinnedProjects({ projects }) {
               project={project}
               index={index}
               onFocus={handleFocus}
-              className="h-[min(70vh,36rem)] w-[min(72vw,60rem)] shrink-0"
+              className={cn(
+                "h-[min(74vh,37rem)] shrink-0",
+                project.image ? "w-[min(86vw,74rem)]" : "w-[min(72vw,60rem)]"
+              )}
             />
           ))}
         </motion.div>

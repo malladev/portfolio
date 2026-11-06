@@ -5,6 +5,7 @@ export const translations = {
       about: "À propos",
       process: "Méthode",
       projects: "Projets",
+      recent: "En cours",
       services: "Services",
       contactMe: "Me contacter",
       skipToContent: "Aller au contenu principal",
@@ -88,6 +89,22 @@ export const translations = {
       open: "Ouvrir le projet",
       opensNewTab: "(nouvel onglet)",
       visit: "Voir le projet",
+      claireFontaine: {
+        title: "La Claire Fontaine",
+        kind: "Site & back-office",
+        description:
+          "La plateforme d'un établissement scolaire de Bamako : une landing page qui présente l'école et ses cinq cycles, de la crèche au lycée, et un back-office pour gérer l'établissement au quotidien.",
+        features: ["Landing page", "Back-office de gestion"],
+        alt: "Page d'accueil du site La Claire Fontaine",
+      },
+      lakanaPlus: {
+        title: "LAKANA PLUS",
+        kind: "Site d'entreprise",
+        description:
+          "Le site d'une entreprise malienne de sécurité : il présente ses expertises en formation, audit, conseil et solutions digitales, puis conduit le visiteur vers une demande de devis.",
+        features: ["Site vitrine", "Demande de devis"],
+        alt: "Page d'accueil du site LAKANA PLUS",
+      },
       telecelUssd: {
         title: "TELECEL USSD",
         kind: "Application mobile",
@@ -107,6 +124,29 @@ export const translations = {
         description:
           "DocuMali centralise les procédures, les documents à fournir et les étapes à suivre. Moins de stress, moins de déplacements inutiles : tout est expliqué clairement sur votre téléphone.",
         steps: ["Documents à fournir", "Étapes à suivre", "Dossier prêt"],
+      },
+    },
+
+    recent: {
+      label: "En cours de développement",
+      title: "Sur ma table à dessin.",
+      subtitle: "Deux projets récents, déjà en ligne, sur lesquels je travaille encore.",
+      status: "En développement",
+      bko: {
+        title: "BKO Gosp·N Grill",
+        kind: "Site d'événement",
+        description:
+          "Trois jours de gospel et de grillades à Bamako : compte à rebours, programme, infos pratiques et une affiche « J'y serai » que chacun crée et partage.",
+        features: ["Générateur d'affiche", "Compte à rebours"],
+        alt: "Page d'accueil du site BKO Gosp·N Grill",
+      },
+      mille: {
+        title: "MILLE EMOTIONS",
+        kind: "Créateur de sites d'événements",
+        description:
+          "Un outil pour créer le site d'un mariage, de fiançailles ou d'une conférence : on choisit un modèle, on le personnalise, puis on l'envoie aux invités en un seul lien.",
+        features: ["Modèles personnalisables", "Sans compétence technique"],
+        alt: "Page d'accueil du site MILLE EMOTIONS",
       },
     },
 
@@ -187,6 +227,7 @@ export const translations = {
       about: "About",
       process: "Process",
       projects: "Projects",
+      recent: "In progress",
       services: "Services",
       contactMe: "Contact me",
       skipToContent: "Skip to main content",
@@ -270,6 +311,22 @@ export const translations = {
       open: "Open project",
       opensNewTab: "(new tab)",
       visit: "View project",
+      claireFontaine: {
+        title: "La Claire Fontaine",
+        kind: "Website & back office",
+        description:
+          "The platform of a school in Bamako: a landing page presenting the school and its five levels, from nursery to high school, and a back office to run the establishment day to day.",
+        features: ["Landing page", "Management back office"],
+        alt: "Home page of the La Claire Fontaine website",
+      },
+      lakanaPlus: {
+        title: "LAKANA PLUS",
+        kind: "Company website",
+        description:
+          "The website of a Malian security company: it presents its expertise in training, auditing, consulting and digital solutions, then leads visitors to a quote request.",
+        features: ["Showcase website", "Quote request"],
+        alt: "Home page of the LAKANA PLUS website",
+      },
       telecelUssd: {
         title: "TELECEL USSD",
         kind: "Mobile app",
@@ -289,6 +346,29 @@ export const translations = {
         description:
           "DocuMali centralizes procedures, required documents and the steps to follow. Less stress, fewer wasted trips: everything is explained clearly on your phone.",
         steps: ["Required documents", "Steps to follow", "File ready"],
+      },
+    },
+
+    recent: {
+      label: "In development",
+      title: "On my drawing board.",
+      subtitle: "Two recent projects, already online, that I am still working on.",
+      status: "In development",
+      bko: {
+        title: "BKO Gosp·N Grill",
+        kind: "Event website",
+        description:
+          "Three days of gospel and grilled food in Bamako: countdown, programme, practical information and an \"I'll be there\" poster that everyone can create and share.",
+        features: ["Poster generator", "Countdown"],
+        alt: "Home page of the BKO Gosp·N Grill website",
+      },
+      mille: {
+        title: "MILLE EMOTIONS",
+        kind: "Event website builder",
+        description:
+          "A tool to create the website of a wedding, an engagement or a conference: pick a template, personalize it, then send it to guests in a single link.",
+        features: ["Customizable templates", "No technical skills needed"],
+        alt: "Home page of the MILLE EMOTIONS website",
       },
     },
 

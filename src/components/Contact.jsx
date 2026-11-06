@@ -110,7 +110,7 @@ export default function Contact() {
     <section id="contact" className="relative px-5 py-24 sm:px-8 lg:py-32" aria-label={t('contact.ariaLabel')}>
       <div className="mx-auto grid max-w-7xl gap-16 border-t border-paper/10 pt-8 lg:grid-cols-2">
         <div>
-          <SectionLabel index="05">{t('contact.label')}</SectionLabel>
+          <SectionLabel index="06">{t('contact.label')}</SectionLabel>
           <motion.h2 {...reveal()} className="text-section mt-6">
             {t('contact.title')}{" "}
             <span className="font-serif font-normal italic tracking-[-0.02em] text-saffron">{t('contact.titleAccent')}</span>

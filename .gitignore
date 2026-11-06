@@ -25,3 +25,5 @@ pnpm-debug.log*
 .pnpm-store
 .aider-desk/
 skills-lock.json
+
+.env

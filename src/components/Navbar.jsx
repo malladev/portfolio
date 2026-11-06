@@ -9,6 +9,7 @@ export const navlinks = [
   { nameKey: "nav.about", href: "#about" },
   { nameKey: "nav.process", href: "#process" },
   { nameKey: "nav.projects", href: "#project" },
+  { nameKey: "nav.recent", href: "#recent" },
   { nameKey: "nav.services", href: "#service" },
 ];
 

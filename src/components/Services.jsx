@@ -19,7 +19,7 @@ export default function Services() {
     <section id="service" className="relative px-5 py-24 sm:px-8 lg:py-32" aria-label={t('service.ariaLabel')}>
       <div className="mx-auto max-w-7xl">
         <div className="grid gap-8 border-t border-paper/10 pt-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,3fr)]">
-          <SectionLabel index="04">{t('service.label')}</SectionLabel>
+          <SectionLabel index="05">{t('service.label')}</SectionLabel>
           <motion.h2 {...reveal()} className="text-section">
             {t('service.title')}
           </motion.h2>
