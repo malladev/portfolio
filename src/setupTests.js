@@ -14,19 +14,22 @@ const MockIntersectionObserver = class IntersectionObserver {
   }
 };
 
-global.IntersectionObserver = MockIntersectionObserver;
-window.IntersectionObserver = MockIntersectionObserver;
+// Server-side tests run in the node environment, where there is no window to set up
+if (typeof window !== 'undefined') {
+  global.IntersectionObserver = MockIntersectionObserver;
+  window.IntersectionObserver = MockIntersectionObserver;
 
-Object.defineProperty(window, 'matchMedia', {
-  writable: true,
-  value: (query) => ({
-    matches: false,
-    media: query,
-    onchange: null,
-    addListener: () => {},
-    removeListener: () => {},
-    addEventListener: () => {},
-    removeEventListener: () => {},
-    dispatchEvent: () => false,
-  }),
-});
+  Object.defineProperty(window, 'matchMedia', {
+    writable: true,
+    value: (query) => ({
+      matches: false,
+      media: query,
+      onchange: null,
+      addListener: () => {},
+      removeListener: () => {},
+      addEventListener: () => {},
+      removeEventListener: () => {},
+      dispatchEvent: () => false,
+    }),
+  });
+}

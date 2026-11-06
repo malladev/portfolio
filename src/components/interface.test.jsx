@@ -1,8 +1,8 @@
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import App from '../App';
 import Navbar from './Navbar';
-import Contact, { buildMailto } from './Contact';
+import Contact from './Contact';
 import Projects from './Projects';
 import Recent from './Recent';
 import { LanguageProvider } from '../contexts/LanguageContext';
@@ -66,16 +66,52 @@ describe('mobile menu', () => {
 });
 
 describe('contact form', () => {
+  const send = () => screen.getByRole('button', { name: 'Envoyer le message' });
+  const subject = () => screen.getByRole('combobox', { name: /Sujet/ });
+
+  const fillForm = async (user) => {
+    await user.type(screen.getByRole('textbox', { name: /Nom/ }), 'Awa');
+    await user.type(screen.getByRole('textbox', { name: /Email/ }), 'awa@test.ml');
+    await user.selectOptions(subject(), 'mobile');
+    await user.type(screen.getByRole('textbox', { name: /Message/ }), 'Bonjour');
+  };
+
+  beforeEach(() => {
+    global.fetch = jest.fn().mockResolvedValue({ ok: true });
+  });
+
+  test('offers five subjects plus "Autre"', () => {
+    withLanguage(<Contact />);
+
+    const options = within(subject()).getAllByRole('option').filter((option) => !option.disabled);
+    expect(options).toHaveLength(6);
+    expect(options[5]).toHaveTextContent('Autre');
+  });
+
+  test('asks for a free text subject only with "Autre"', async () => {
+    const user = userEvent.setup();
+    withLanguage(<Contact />);
+    expect(screen.queryByRole('textbox', { name: /Précisez/ })).not.toBeInTheDocument();
+
+    await user.selectOptions(subject(), 'other');
+    await user.click(send());
+
+    expect(await screen.findByRole('textbox', { name: /Précisez/ })).toHaveAttribute('aria-invalid', 'true');
+    expect(global.fetch).not.toHaveBeenCalled();
+  });
+
   test('shows inline errors and focuses the first invalid field', async () => {
     const user = userEvent.setup();
     withLanguage(<Contact />);
 
-    await user.click(screen.getByRole('button', { name: 'Continuer dans ma messagerie' }));
+    await user.click(send());
 
     const name = screen.getByRole('textbox', { name: /Nom/ });
     expect(name).toHaveFocus();
     expect(name).toHaveAttribute('aria-invalid', 'true');
     expect(name).toHaveAccessibleDescription('Ce champ est obligatoire.');
+    expect(subject()).toHaveAttribute('aria-invalid', 'true');
+    expect(global.fetch).not.toHaveBeenCalled();
   });
 
   test('rejects a malformed email as soon as the field is left', async () => {
@@ -88,14 +124,30 @@ describe('contact form', () => {
     expect(screen.getByText(/adresse e-mail valide/)).toBeInTheDocument();
   });
 
-  test('prepares the whole message for the mail app', () => {
-    const url = buildMailto(
-      { name: 'Awa', email: 'awa@test.ml', subject: '', message: 'Bonjour & merci' },
-      'Message de'
-    );
+  test('posts to the server, confirms, and clears the form', async () => {
+    const user = userEvent.setup();
+    withLanguage(<Contact />);
 
-    expect(url).toContain('subject=Message%20de%20Awa');
-    expect(decodeURIComponent(url)).toContain('Bonjour & merci\n\nAwa\nawa@test.ml');
+    await fillForm(user);
+    await user.click(send());
+
+    expect(await screen.findByText(/Message envoyé/)).toBeInTheDocument();
+    const [url, options] = global.fetch.mock.calls[0];
+    expect(url).toBe('/api/contact');
+    expect(JSON.parse(options.body)).toMatchObject({ name: 'Awa', subject: 'mobile', company: '' });
+    expect(screen.getByRole('textbox', { name: /Message/ })).toHaveValue('');
+  });
+
+  test('keeps the message and offers a way out when sending fails', async () => {
+    global.fetch.mockResolvedValue({ ok: false, status: 502 });
+    const user = userEvent.setup();
+    withLanguage(<Contact />);
+
+    await fillForm(user);
+    await user.click(send());
+
+    expect(await screen.findByRole('alert')).toHaveTextContent(/L'envoi a échoué/);
+    expect(screen.getByRole('textbox', { name: /Message/ })).toHaveValue('Bonjour');
   });
 });
 

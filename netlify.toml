@@ -2,6 +2,10 @@
   command = "pnpm run build"
   publish = "build"
 
+# Serverless functions (the contact form sends its emails from here)
+[functions]
+  directory = "netlify/functions"
+
 # Node.js and PNPM version (Netlify will use .nvmrc if present, but this is a backup)
 [build.environment]
   NODE_VERSION = "22"

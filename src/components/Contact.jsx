@@ -1,6 +1,6 @@
 import React, { useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { CheckIcon, ClipboardIcon } from "@heroicons/react/20/solid";
+import { CheckIcon, ChevronDownIcon, ClipboardIcon } from "@heroicons/react/20/solid";
 import { IconBrandGithub, IconBrandLinkedin } from "@tabler/icons-react";
 import { useLanguage } from "../contexts/LanguageContext.jsx";
 import { cn } from "../utils/cn.ts";
@@ -8,13 +8,25 @@ import { reveal, spring } from "../utils/motion.ts";
 import { SectionLabel } from "./ui/SectionLabel.jsx";
 
 const CONTACT_EMAIL = "konelamine1122@gmail.com";
+const SEND_TIMEOUT_MS = 15000;
 
 const socials = [
   { name: "LinkedIn", Icon: IconBrandLinkedin, url: "https://www.linkedin.com/in/mohamed-lamine-kon%C3%A9-b51999193/" },
   { name: "GitHub", Icon: IconBrandGithub, url: "https://github.com/malladev" },
 ];
 
-const requiredFields = ["name", "email", "message"];
+// Same keys as netlify/functions/contact.mjs. "other" opens a free text field.
+const subjectKeys = ["web", "mobile", "design", "backend", "site", "other"];
+
+const emptyForm = { name: "", email: "", subject: "", subjectOther: "", message: "" };
+
+const requiredFields = (data) => [
+  "name",
+  "email",
+  "subject",
+  ...(data.subject === "other" ? ["subjectOther"] : []),
+  "message",
+];
 
 const fieldClass = (hasError) =>
   cn(
@@ -22,23 +34,17 @@ const fieldClass = (hasError) =>
     hasError ? "border-red-400" : "border-paper/25"
   );
 
-// There is no backend yet: the message is handed to the visitor's own mail app, already written.
-export const buildMailto = (data, intro) => {
-  const subject = data.subject.trim() || `${intro} ${data.name.trim()}`;
-  const body = `${data.message.trim()}\n\n${data.name.trim()}\n${data.email.trim()}`;
-  return `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-};
-
 export default function Contact() {
   const { t } = useLanguage();
-  const [formData, setFormData] = useState({ name: "", email: "", subject: "", message: "" });
+  const [formData, setFormData] = useState(emptyForm);
   const [errors, setErrors] = useState({});
-  const [opened, setOpened] = useState(false);
+  const [status, setStatus] = useState("idle"); // idle | sending | sent | failed
   const [copied, setCopied] = useState(false);
   const copyTimer = useRef(null);
+  const honeypotRef = useRef(null);
 
-  const validate = (name, value) => {
-    if (requiredFields.includes(name) && !value.trim()) return t('contact.form.errors.required');
+  const validate = (name, value, data = formData) => {
+    if (requiredFields(data).includes(name) && !value.trim()) return t('contact.form.errors.required');
     if (name === "email" && value.trim() && !/^\S+@\S+\.\S+$/.test(value.trim())) {
       return t('contact.form.errors.email');
     }
@@ -48,7 +54,7 @@ export default function Contact() {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
-    setOpened(false);
+    if (status !== "sending") setStatus("idle");
     // Clear an error as soon as it is fixed, without nagging while typing
     if (errors[name]) setErrors((prev) => ({ ...prev, [name]: validate(name, value) }));
   };
@@ -58,19 +64,41 @@ export default function Contact() {
     setErrors((prev) => ({ ...prev, [name]: validate(name, value) }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const nextErrors = Object.fromEntries(requiredFields.map((name) => [name, validate(name, formData[name])]));
+    if (status === "sending") return;
+
+    const fields = requiredFields(formData);
+    const nextErrors = Object.fromEntries(fields.map((name) => [name, validate(name, formData[name])]));
     setErrors(nextErrors);
 
-    const firstInvalid = requiredFields.find((name) => nextErrors[name]);
+    const firstInvalid = fields.find((name) => nextErrors[name]);
     if (firstInvalid) {
       document.getElementById(firstInvalid)?.focus();
       return;
     }
 
-    window.location.href = buildMailto(formData, t('contact.form.mailBody'));
-    setOpened(true);
+    setStatus("sending");
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), SEND_TIMEOUT_MS);
+
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...formData, company: honeypotRef.current?.value ?? "" }),
+        signal: controller.signal,
+      });
+      if (!response.ok) throw new Error(`contact: ${response.status}`);
+
+      setFormData(emptyForm);
+      setStatus("sent");
+    } catch {
+      // What was typed stays in the form, so nothing is lost and a retry costs one click
+      setStatus("failed");
+    } finally {
+      clearTimeout(timeout);
+    }
   };
 
   const copyEmail = async () => {
@@ -80,16 +108,20 @@ export default function Contact() {
     copyTimer.current = setTimeout(() => setCopied(false), 2000);
   };
 
-  const fieldProps = (name) => ({
+  const errorProps = (name) => ({
+    "aria-invalid": errors[name] ? true : undefined,
+    "aria-describedby": errors[name] ? `${name}-error` : undefined,
+  });
+
+  const fieldProps = (name, placeholderKey = `${name}Placeholder`) => ({
     id: name,
     name,
     value: formData[name],
     onChange: handleChange,
     onBlur: handleBlur,
-    placeholder: t(`contact.form.${name}Placeholder`),
+    placeholder: t(`contact.form.${placeholderKey}`),
     className: fieldClass(Boolean(errors[name])),
-    "aria-invalid": errors[name] ? true : undefined,
-    "aria-describedby": errors[name] ? `${name}-error` : undefined,
+    ...errorProps(name),
   });
 
   const fieldError = (name) =>
@@ -102,9 +134,13 @@ export default function Contact() {
   const fieldLabel = (name) => (
     <label htmlFor={name} className="block font-mono text-sm text-paper-muted">
       {t(`contact.form.${name}`)}{" "}
-      {requiredFields.includes(name) && <span aria-hidden="true">{t('contact.form.required')}</span>}
+      {requiredFields({ subject: "other" }).includes(name) && (
+        <span aria-hidden="true">{t('contact.form.required')}</span>
+      )}
     </label>
   );
+
+  const isSending = status === "sending";
 
   return (
     <section id="contact" className="relative px-5 py-24 sm:px-8 lg:py-32" aria-label={t('contact.ariaLabel')}>
@@ -162,48 +198,121 @@ export default function Contact() {
         </div>
 
         {/* noValidate: errors are shown inline, next to their field and translated */}
-        <motion.form {...reveal(1)} onSubmit={handleSubmit} noValidate className="space-y-7">
+        <motion.form {...reveal(1)} onSubmit={handleSubmit} noValidate className="relative space-y-7">
+          {/* Honeypot: invisible to people and skipped by the keyboard, filled by bots */}
+          <div aria-hidden="true" className="absolute -left-[9999px] top-0">
+            <label>
+              Company
+              <input ref={honeypotRef} type="text" name="company" tabIndex={-1} autoComplete="off" />
+            </label>
+          </div>
+
           <div className="grid gap-7 sm:grid-cols-2">
             <div>
               {fieldLabel("name")}
-              <input type="text" required autoComplete="name" {...fieldProps("name")} />
+              <input type="text" required maxLength={120} autoComplete="name" {...fieldProps("name")} />
               {fieldError("name")}
             </div>
             <div>
               {fieldLabel("email")}
-              <input type="email" required autoComplete="email" {...fieldProps("email")} />
+              <input type="email" required maxLength={254} autoComplete="email" {...fieldProps("email")} />
               {fieldError("email")}
             </div>
           </div>
+
           <div>
             {fieldLabel("subject")}
-            <input type="text" {...fieldProps("subject")} />
+            <div className="relative">
+              <select
+                required
+                id="subject"
+                name="subject"
+                value={formData.subject}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                className={cn(
+                  fieldClass(Boolean(errors.subject)),
+                  "cursor-pointer appearance-none pr-8",
+                  !formData.subject && "text-paper-muted/80"
+                )}
+                {...errorProps("subject")}
+              >
+                <option value="" disabled className="bg-ink-raised text-paper-muted">
+                  {t('contact.form.subjectPlaceholder')}
+                </option>
+                {subjectKeys.map((key) => (
+                  <option key={key} value={key} className="bg-ink-raised text-paper">
+                    {t(`contact.form.subjects.${key}`)}
+                  </option>
+                ))}
+              </select>
+              <ChevronDownIcon aria-hidden="true" className="pointer-events-none absolute right-0 top-1/2 h-5 w-5 -translate-y-1/2 text-paper-muted" />
+            </div>
+            {fieldError("subject")}
+
+            <AnimatePresence initial={false}>
+              {formData.subject === "other" && (
+                <motion.div
+                  key="subject-other"
+                  initial={{ opacity: 0, y: -8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -8 }}
+                  transition={spring}
+                  className="mt-7"
+                >
+                  {fieldLabel("subjectOther")}
+                  <input type="text" required maxLength={120} {...fieldProps("subjectOther")} />
+                  {fieldError("subjectOther")}
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
+
           <div>
             {fieldLabel("message")}
-            <textarea required rows={5} {...fieldProps("message")} className={cn(fieldClass(Boolean(errors.message)), "resize-none")} />
+            <textarea
+              required
+              rows={5}
+              maxLength={5000}
+              {...fieldProps("message")}
+              className={cn(fieldClass(Boolean(errors.message)), "resize-none")}
+            />
             {fieldError("message")}
           </div>
 
-          <div className="flex flex-wrap items-center justify-between gap-4">
-            <p className="font-mono text-xs text-paper-muted">{t('contact.form.requiredHint')}</p>
-            <button
-              type="submit"
-              className="pressable min-h-12 rounded-full bg-saffron px-7 font-semibold text-ink hover:bg-paper"
-            >
-              {t('contact.form.send')}
-            </button>
-          </div>
-          <p role="status" className="text-sm leading-relaxed text-paper-muted empty:hidden">
-            {opened && (
+          <p role="status" className="flex items-center gap-2 text-sm leading-relaxed text-saffron empty:hidden">
+            {status === "sent" && (
               <>
-                {t('contact.form.sent')}{" "}
-                <a href={`mailto:${CONTACT_EMAIL}`} className="font-medium text-saffron underline underline-offset-4">
+                <CheckIcon className="h-5 w-5 shrink-0" aria-hidden="true" />
+                {t('contact.form.sent')}
+              </>
+            )}
+          </p>
+          <p role="alert" className="text-sm leading-relaxed text-red-300 empty:hidden">
+            {status === "failed" && (
+              <>
+                {t('contact.form.failed')}{" "}
+                <a href={`mailto:${CONTACT_EMAIL}`} className="font-medium text-paper underline underline-offset-4">
                   {CONTACT_EMAIL}
                 </a>
               </>
             )}
           </p>
+
+          <div className="flex flex-wrap items-center justify-between gap-4">
+            <p className="font-mono text-xs text-paper-muted">{t('contact.form.requiredHint')}</p>
+            <button
+              type="submit"
+              disabled={isSending}
+              aria-busy={isSending}
+              className="pressable flex min-h-12 items-center gap-2 rounded-full bg-saffron px-7 font-semibold text-ink hover:bg-paper disabled:cursor-wait disabled:opacity-70"
+            >
+              {isSending && (
+                <span aria-hidden="true" className="h-4 w-4 animate-spin rounded-full border-2 border-ink/30 border-t-ink" />
+              )}
+              {t(isSending ? 'contact.form.sending' : 'contact.form.send')}
+            </button>
+          </div>
         </motion.form>
       </div>
     </section>

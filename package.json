@@ -18,6 +18,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
+    "test:functions": "node --test netlify/contact.test.mjs",
     "lint": "eslint src",
     "eject": "react-scripts eject"
   },
