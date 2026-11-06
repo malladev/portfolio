@@ -110,20 +110,21 @@ export const translations = {
         kind: "Application mobile",
         description:
           "Une application officieuse, développée pour un usage personnel, qui automatise la saisie des codes USSD de l'opérateur Telecel (Mali), avec une attention portée à l'ergonomie et à la rapidité.",
+        alt: "Liste des forfaits dans l'application TELECEL USSD sur un téléphone",
       },
       evimo: {
         title: "EVIMO",
         kind: "Plateforme de billetterie",
         description:
           "Une plateforme de billetterie d'événements qui intègre la gestion des billets, la sécurisation des accès et une logique orientée expérience utilisateur.",
-        scan: "Accès validé",
+        alt: "Écran d'accueil de l'application EVIMO sur un téléphone",
       },
       documali: {
         title: "DocuMali",
         kind: "Service en ligne",
         description:
           "DocuMali centralise les procédures, les documents à fournir et les étapes à suivre. Moins de stress, moins de déplacements inutiles : tout est expliqué clairement sur votre téléphone.",
-        steps: ["Documents à fournir", "Étapes à suivre", "Dossier prêt"],
+        alt: "Page d'accueil du site DocuMali",
       },
     },
 
@@ -343,20 +344,21 @@ export const translations = {
         kind: "Mobile app",
         description:
           "An unofficial app, built for personal use, that automates entering USSD codes for the operator Telecel (Mali), with particular attention to ergonomics and speed.",
+        alt: "Plan list in the TELECEL USSD app on a phone",
       },
       evimo: {
         title: "EVIMO",
         kind: "Ticketing platform",
         description:
           "An event ticketing platform that brings together ticket management, access security and a user-experience-first logic.",
-        scan: "Access granted",
+        alt: "Home screen of the EVIMO app on a phone",
       },
       documali: {
         title: "DocuMali",
         kind: "Online service",
         description:
           "DocuMali centralizes procedures, required documents and the steps to follow. Less stress, fewer wasted trips: everything is explained clearly on your phone.",
-        steps: ["Required documents", "Steps to follow", "File ready"],
+        alt: "Home page of the DocuMali website",
       },
     },
 
