@@ -14,14 +14,12 @@ const getRecentProjects = (t) => [
     ...t('recent.bko'),
     link: "https://bko-gosp-grill.vercel.app/",
     host: "bko-gosp-grill.vercel.app",
-    tags: ["Next.js", "Vercel"],
     image: { src: "./assets/projects/bko-gosp-grill.webp", width: 1600, height: 750, alt: t('recent.bko.alt') },
   },
   {
     ...t('recent.mille'),
     link: "https://mille-emotions.vercel.app/",
     host: "mille-emotions.vercel.app",
-    tags: ["Next.js", "Vercel"],
     image: { src: "./assets/projects/mille-emotions.webp", width: 1600, height: 746, alt: t('recent.mille.alt') },
   },
 ];
@@ -67,9 +65,9 @@ function RecentCard({ project, index }) {
           <p className="mt-3 leading-relaxed text-paper-muted">{project.description}</p>
 
           <ul className="mt-5 flex flex-wrap gap-2 font-mono text-xs">
-            {[...project.tags, ...project.features].map((tag) => (
-              <li key={tag} className="rounded-full border border-paper/15 px-3 py-1 text-paper-muted">
-                {tag}
+            {project.features.map((feature) => (
+              <li key={feature} className="rounded-full border border-paper/15 px-3 py-1 text-paper-muted">
+                {feature}
               </li>
             ))}
           </ul>
@@ -100,7 +98,7 @@ export default function Recent() {
     <section id="recent" className="relative px-5 py-24 sm:px-8 lg:py-32" aria-label={t('recent.label')}>
       <div className="mx-auto max-w-7xl">
         <div className="grid gap-8 border-t border-paper/10 pt-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,3fr)]">
-          <SectionLabel index="04">{t('recent.label')}</SectionLabel>
+          <SectionLabel index="03">{t('recent.label')}</SectionLabel>
           <div>
             <motion.h2 {...reveal()} className="text-section">
               {t('recent.title')}

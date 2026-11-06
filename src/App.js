@@ -33,8 +33,8 @@ function App() {
         <Suspense fallback={<div className="min-h-screen" />}>
           <About />
           <Process />
-          <Projects />
           <Recent />
+          <Projects />
           <Services />
           <Contact />
           <ScrollToHash />
