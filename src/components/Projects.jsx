@@ -4,9 +4,8 @@ import { ArrowUpRightIcon } from "@heroicons/react/20/solid";
 import { useLanguage } from "../contexts/LanguageContext.jsx";
 import { cn } from "../utils/cn.ts";
 import { reveal } from "../utils/motion.ts";
-import { BrowserFrame } from "./ui/BrowserFrame.jsx";
+import { BrowserFrame, PhoneFrame } from "./ui/BrowserFrame.jsx";
 import { SectionLabel } from "./ui/SectionLabel.jsx";
-import { ChecklistVignette, DialVignette, TicketVignette } from "./ui/Vignettes.jsx";
 
 const getProjects = (t) => [
   {
@@ -34,17 +33,33 @@ const getProjects = (t) => [
   {
     ...t('projects.documali'),
     link: "https://documali.net/",
-    Vignette: ChecklistVignette,
+    host: "documali.net",
+    image: {
+      src: "./assets/projects/documali.webp",
+      width: 1600,
+      height: 782,
+      alt: t('projects.documali.alt'),
+    },
   },
   {
     ...t('projects.evimo'),
     link: "https://apkpure.com/p/com.malladev.evimomobile",
-    Vignette: TicketVignette,
+    image: {
+      src: "./assets/projects/evimo.webp",
+      width: 720,
+      height: 1280,
+      alt: t('projects.evimo.alt'),
+    },
   },
   {
     ...t('projects.telecelUssd'),
     link: "https://apkpure.com/p/com.malladev.telecel_ussd",
-    Vignette: DialVignette,
+    image: {
+      src: "./assets/projects/telecel-ussd.webp",
+      width: 720,
+      height: 1280,
+      alt: t('projects.telecelUssd.alt'),
+    },
   },
 ];
 
@@ -65,14 +80,13 @@ function useIsDesktop() {
 
 function ProjectCard({ project, index, onFocus, className }) {
   const { t } = useLanguage();
-  const { Vignette } = project;
 
   return (
     <article
       onFocus={onFocus}
       className={cn(
         "group relative grid overflow-hidden rounded-3xl border border-paper/10 bg-ink-raised transition-colors duration-200 hover:border-paper/30",
-        project.image ? "lg:grid-cols-[minmax(0,5fr)_minmax(0,8fr)]" : "lg:grid-cols-2",
+        project.host ? "lg:grid-cols-[minmax(0,5fr)_minmax(0,8fr)]" : "lg:grid-cols-2",
         className
       )}
     >
@@ -100,7 +114,7 @@ function ProjectCard({ project, index, onFocus, className }) {
       </div>
 
       <div className="flex items-center justify-center bg-paper/[0.03] p-5 sm:p-8">
-        {project.image ? <BrowserFrame image={project.image} host={project.host} /> : <Vignette />}
+        {project.host ? <BrowserFrame image={project.image} host={project.host} /> : <PhoneFrame image={project.image} />}
       </div>
 
       {/* The whole card is the link: it looks like one target, so it behaves like one */}
@@ -170,7 +184,7 @@ function PinnedProjects({ projects }) {
               onFocus={handleFocus}
               className={cn(
                 "h-[min(74vh,37rem)] shrink-0",
-                project.image ? "w-[min(86vw,74rem)]" : "w-[min(72vw,60rem)]"
+                project.host ? "w-[min(86vw,74rem)]" : "w-[min(72vw,60rem)]"
               )}
             />
           ))}
