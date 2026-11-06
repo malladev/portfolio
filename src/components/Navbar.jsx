@@ -1,280 +1,247 @@
-import React, { useEffect, useState, useCallback, useMemo } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import { Bars2Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { useLanguage } from "../contexts/LanguageContext.jsx";
+import { spring } from "../utils/motion.ts";
 
-// Separate navlinks into its own module or keep memoized in the same component
+// Same order as the page, so the navigation maps onto what it moves to
 export const navlinks = [
-  { id: 1, nameKey: "nav.about", href: "#about" },
-  { id: 2, nameKey: "nav.services", href: "#service" },
-  { id: 4, nameKey: "nav.projects", href: "#project" },
+  { nameKey: "nav.about", href: "#about" },
+  { nameKey: "nav.process", href: "#process" },
+  { nameKey: "nav.projects", href: "#project" },
+  { nameKey: "nav.services", href: "#service" },
 ];
 
+const menuHidden = { opacity: 0, scale: 0.96, y: -8 };
+
+// Which section sits under the reading line. Reads the DOM on each scroll frame
+// so it keeps working once the lazy sections have mounted.
+function useActiveSection() {
+  const [active, setActive] = useState(null);
+
+  useEffect(() => {
+    let ticking = false;
+
+    const update = () => {
+      ticking = false;
+      const line = window.innerHeight * 0.4;
+      const current = navlinks.find(({ href }) => {
+        const rect = document.getElementById(href.substring(1))?.getBoundingClientRect();
+        return rect && rect.top <= line && rect.bottom > line;
+      });
+      setActive(current ? current.href : null);
+    };
+
+    const handleScroll = () => {
+      if (!ticking) {
+        ticking = true;
+        window.requestAnimationFrame(update);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  return active;
+}
+
 function Navbar() {
-  const [mobileMenu, setMobileMenu] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
   const { language, toggleLanguage, t } = useLanguage();
+  const activeSection = useActiveSection();
+  const menuButtonRef = useRef(null);
+  const menuRef = useRef(null);
 
-  // Memoize the navlinks array to avoid unnecessary re-renders
-  const memoizedNavLinks = useMemo(() => navlinks, []);
+  const closeMenu = () => setMenuOpen(false);
 
-  const handleLinkClick = useCallback((e, href) => {
-    e.preventDefault();
-    const targetElement = document.getElementById(href.substring(1));
-    if (targetElement) {
-      targetElement.scrollIntoView({
-        behavior: "smooth", // Enable smooth scroll
-      });
-    }
-    // Close mobile menu if open
-    setMobileMenu(false);
-  }, []);
-
-  const handleContactClick = useCallback((e) => {
-    e.preventDefault();
-    const targetElement = document.getElementById("contact");
-    if (targetElement) {
-      targetElement.scrollIntoView({
-        behavior: "smooth",
-        block: "start",
-      });
-    }
-    setMobileMenu(false);
-  }, []);
+  // Closing on purpose hands focus back to what opened the menu
+  const dismissMenu = () => {
+    setMenuOpen(false);
+    menuButtonRef.current?.focus({ preventScroll: true });
+  };
 
   useEffect(() => {
-    const sectionObserver = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const id = entry.target.id;
-          }
-        });
-      },
-      { threshold: 0.7 }
-    );
+    if (!menuOpen) return undefined;
 
-    // Store section selectors more dynamically
-    const sections = ["about", "tech", "contact", "project", "service"];
-    const sectionElements = sections.map((id) => document.getElementById(id));
+    document.body.style.overflow = "hidden";
+    const focusable = () => Array.from(menuRef.current?.querySelectorAll("a[href], button") ?? []);
+    focusable()[0]?.focus();
 
-    sectionElements.forEach((section) => {
-      if (section) sectionObserver.observe(section);
-    });
+    const handleKeyDown = (e) => {
+      if (e.key === "Escape") {
+        setMenuOpen(false);
+        menuButtonRef.current?.focus({ preventScroll: true });
+        return;
+      }
+      if (e.key !== "Tab") return;
+
+      // Keep Tab inside the dialog
+      const items = focusable();
+      const first = items[0];
+      const last = items[items.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    };
+
+    // The dialog does not exist at desktop widths: never leave the page scroll-locked there
+    const desktop = window.matchMedia("(min-width: 1024px)");
+    const handleDesktop = (e) => e.matches && setMenuOpen(false);
+
+    document.addEventListener("keydown", handleKeyDown);
+    desktop.addEventListener("change", handleDesktop);
 
     return () => {
-      sectionElements.forEach((section) => {
-        if (section) sectionObserver.unobserve(section);
-      });
+      document.body.style.overflow = "";
+      document.removeEventListener("keydown", handleKeyDown);
+      desktop.removeEventListener("change", handleDesktop);
     };
-  }, []);
-
-  // Effect to toggle scroll lock when mobile menu is open
-  useEffect(() => {
-    const originalStyle = window.getComputedStyle(document.body).overflow;
-
-    if (mobileMenu) {
-      document.body.style.overflow = "hidden"; // Lock scroll on menu open
-    } else {
-      document.body.style.overflow = originalStyle;
-    }
-
-    return () => {
-      document.body.style.overflow = originalStyle; // Cleanup scroll lock
-    };
-  }, [mobileMenu]);
+  }, [menuOpen]);
 
   return (
-    <nav className="w-full bg-gray-950 mx-auto" role="navigation" aria-label={t('nav.mainNavigation')}>
-      {/* Skip to main content link */}
-      <a href="#about" className="skip-to-main">
+    <header className="pointer-events-none fixed inset-x-0 top-0 z-40 px-3 pt-3">
+      <a href="#main-content" className="skip-to-main pointer-events-auto">
         {t('nav.skipToContent')}
       </a>
-      
-      {/* Desktop Navbar */}
-      <div className="hidden relative max-w-6xl mx-auto w-full p-4 gap-5 lg:flex items-center justify-between">
-        <a
-          href="/"
-          className="flex items-center gap-2 cursor-pointer hover:duration-500 hover:transition-transform hover:scale-110 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-950 rounded-lg"
-          aria-label={t('nav.backToHome')}
-        >
-          <img
-            className="rounded-full w-44 object-cover"
-            src="./assets/favicon.webp"
-            alt="Photo de profil - Mohamed Lamine KONE"
-            loading="lazy"
-            width="176"
-            height="176"
-          />
+
+      <nav
+        className="nav-material pointer-events-auto mx-auto flex h-14 w-full max-w-4xl items-center justify-between gap-4 rounded-full border border-paper/10 pl-5 pr-2"
+        aria-label={t('nav.mainNavigation')}
+      >
+        <a href="#top" className="pressable flex min-h-11 items-center rounded-lg" aria-label={t('nav.backToHome')}>
+          <img className="h-6 w-auto" src="./assets/favicon.webp" alt="" width="1676" height="404" />
         </a>
-        <div className="flex items-center lg:gap-x-8 md:gap-x-6">
-          {memoizedNavLinks.map((nav) => (
-            <a
-              key={nav.id}
-              href={nav.href}
-              onClick={(e) => handleLinkClick(e, nav.href)}
-              className="text-gray-300 font-medium hover:border-b-2 hover:border-b-indigo-500 hover:text-indigo-500 transition-all duration-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-950 rounded px-2 py-1"
-              aria-label={`${t('nav.goToSection')} ${t(nav.nameKey)}`}
-            >
-              {t(nav.nameKey)}
-            </a>
-          ))}
-          
-          {/* Language Toggle Button */}
+
+        {/* Desktop */}
+        <div className="hidden items-center lg:flex">
+          {navlinks.map((nav) => {
+            const isActive = activeSection === nav.href;
+            return (
+              <a
+                key={nav.href}
+                href={nav.href}
+                aria-current={isActive ? "location" : undefined}
+                className="pressable relative flex min-h-10 items-center rounded-full px-4 text-[0.95rem] font-medium text-paper/70 hover:text-paper aria-[current]:text-paper"
+              >
+                {isActive && (
+                  <motion.span
+                    layoutId="nav-indicator"
+                    transition={spring}
+                    className="absolute inset-0 rounded-full bg-paper/10"
+                  />
+                )}
+                <span className="relative">{t(nav.nameKey)}</span>
+              </a>
+            );
+          })}
+        </div>
+
+        <div className="flex items-center gap-1">
           <button
             onClick={toggleLanguage}
-            className="flex items-center gap-2 px-3 py-2 text-gray-300 font-medium hover:text-indigo-500 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-950 rounded-lg border border-gray-700 hover:border-indigo-500"
+            className="pressable hidden min-h-11 min-w-11 items-center justify-center rounded-full font-mono text-sm text-paper/70 hover:text-paper lg:flex"
             aria-label={t('nav.switchLanguage')}
             title={t('nav.switchLanguage')}
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-5 w-5"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              strokeWidth={2}
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"
-              />
-            </svg>
-            <span className="text-sm font-semibold">{language === 'fr' ? 'EN' : 'FR'}</span>
+            {language === 'fr' ? 'EN' : 'FR'}
           </button>
 
-          {/* Contact Me Button */}
-          <button
-            onClick={handleContactClick}
-            className="px-6 py-2 bg-indigo-600 text-white font-semibold rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-950 transition-all duration-300 shadow-md hover:shadow-lg hover:scale-105"
-            aria-label={t('nav.contactMe')}
+          <a
+            href="#contact"
+            className="pressable hidden min-h-10 items-center rounded-full bg-saffron px-5 font-semibold text-ink hover:bg-paper lg:flex"
           >
             {t('nav.contactMe')}
+          </a>
+
+          {/* Mobile and tablet */}
+          <button
+            ref={menuButtonRef}
+            onClick={() => setMenuOpen(true)}
+            className="pressable flex h-11 w-11 items-center justify-center rounded-full text-paper lg:hidden"
+            aria-label={t('nav.openMenu')}
+            aria-expanded={menuOpen}
+            aria-controls={menuOpen ? "mobile-menu" : undefined}
+          >
+            <Bars2Icon className="h-6 w-6" aria-hidden="true" />
           </button>
         </div>
-      </div>
+      </nav>
 
-      {/* Mobile and Tablet Navbar */}
-      <div className="lg:hidden z-[999] p-3.5">
-        <div className="flex items-center gap-5 justify-between">
-          <img
-            className="rounded-full w-32 object-cover"
-            src="./assets/favicon.webp"
-            alt="Photo de profil - Mohamed Lamine KONE"
-            loading="lazy"
-            width="128"
-            height="128"
-          />
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="2em"
-            height="2em"
-            viewBox="0 0 24 24"
-            onClick={() => setMobileMenu(true)}
-            className="cursor-pointer focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-950 rounded"
-            aria-label={t('nav.openMenu')}
-            aria-expanded={mobileMenu}
-            aria-controls="mobile-menu"
-          >
-            <path
-              fill="currentColor"
-              className="text-gray-200"
-              d="M4 18h11c.55 0 1-.45 1-1s-.45-1-1-1H4c-.55 0-1 .45-1 1s.45 1 1 1m0-5h8c.55 0 1-.45 1-1s-.45-1-1-1H4c-.55 0-1 .45-1 1s.45 1 1 1M3 7c0 .55.45 1 1 1h11c.55 0 1-.45 1-1s-.45-1-1H4c-.55 0-1 .45-1 1m17.3 7.88L17.42 12l2.88-2.88a.996.996 0 1 0-1.41-1.41L15.3 11.3a.996.996 0 0 0 0 1.41l3.59 3.59c.39.39 1.02.39 1.41 0c.38-.39.39-1.03 0-1.42"
-            ></path>
-          </svg>
-        </div>
-      </div>
-      
-      {mobileMenu && (
-        <div 
-          id="mobile-menu"
-          className="h-screen z-[999] bg-gray-950 absolute inset-0 p-5"
-          role="dialog"
-          aria-modal="true"
-          aria-label={t('nav.mobileMenu')}
-        >
-          {/* Background effect for mobile menu */}
-          <div
-            className="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-2xl sm:-top-80"
-            aria-hidden="true"
-          >
-            <div
-              className="relative left-[calc(50%-11rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] opacity-20 sm:left-[calc(50%-30rem)] sm:w-[72.1875rem]"
-              style={{
-                clipPath:
-                  "polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)",
-              }}
+      <AnimatePresence>
+        {menuOpen && (
+          <>
+            {/* Dim to focus: this is a modal task */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={dismissMenu}
+              className="pointer-events-auto fixed inset-0 bg-ink/70 lg:hidden"
+              aria-hidden="true"
             />
-          </div>
-
-          {/* Close button */}
-          <div className="flex justify-end">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="2em"
-              height="2em"
-              viewBox="0 0 24 24"
-              onClick={() => setMobileMenu(!mobileMenu)}
-              className="cursor-pointer focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-950 rounded"
-              aria-label={t('nav.closeMenu')}
+            <motion.div
+              ref={menuRef}
+              id="mobile-menu"
+              // Grows from the button that opened it, and leaves the same way
+              style={{ originX: 1, originY: 0 }}
+              initial={menuHidden}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={menuHidden}
+              className="pointer-events-auto fixed inset-x-3 top-3 max-h-[calc(100dvh-1.5rem)] overflow-y-auto rounded-3xl border border-paper/10 bg-ink-raised p-3 lg:hidden"
+              role="dialog"
+              aria-modal="true"
+              aria-label={t('nav.mobileMenu')}
             >
-              <path
-                fill="currentColor"
-                className="text-gray-200"
-                d="M12 2C6.47 2 2 6.47 2 12s4.47 10 10 10s10-4.47 10-10S17.53 2 12 2m4.3 14.3a.996.996 0 0 1-1.41 0L12 13.41L9.11 16.3a.996.996 0 1 1-1.41-1.41L10.59 12L7.7 9.11A.996.996 0 1 1 9.11 7.7L12 10.59l2.89-2.89a.996.996 0 1 1 1.41 1.41L13.41 12l2.89 2.89c.38.38.38 1.02 0 1.41"
-              ></path>
-            </svg>
-          </div>
+              <div className="flex justify-end">
+                <button
+                  onClick={dismissMenu}
+                  className="pressable flex h-11 w-11 items-center justify-center rounded-full text-paper"
+                  aria-label={t('nav.closeMenu')}
+                >
+                  <XMarkIcon className="h-6 w-6" aria-hidden="true" />
+                </button>
+              </div>
 
-          {/* Mobile Menu Links */}
-          <div className="flex flex-col items-center gap-y-8 pt-20">
-            {memoizedNavLinks.map((nav) => (
-              <a
-                key={nav.id}
-                href={nav.href}
-                onClick={(e) => handleLinkClick(e, nav.href)}
-                className="text-gray-300 font-medium hover:border-b-2 hover:border-b-indigo-500 hover:text-indigo-500 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-950 rounded px-2 py-1 text-lg"
-                aria-label={`${t('nav.goToSection')} ${t(nav.nameKey)}`}
-              >
-                {t(nav.nameKey)}
-              </a>
-            ))}
-            
-            {/* Language Toggle Button - Mobile */}
-            <button
-              onClick={toggleLanguage}
-              className="flex items-center gap-2 px-4 py-3 text-gray-300 font-medium hover:text-indigo-500 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-950 rounded-lg border border-gray-700 hover:border-indigo-500"
-              aria-label={t('nav.switchLanguage')}
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-6 w-6"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth={2}
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"
-                />
-              </svg>
-              <span className="text-base font-semibold">
-                {language === 'fr' ? 'English' : 'Français'}
-              </span>
-            </button>
+              <div className="flex flex-col px-3 pb-3">
+                {navlinks.map((nav) => (
+                  <a
+                    key={nav.href}
+                    href={nav.href}
+                    onClick={closeMenu}
+                    aria-current={activeSection === nav.href ? "location" : undefined}
+                    className="pressable text-step flex min-h-14 items-center text-paper/80 aria-[current]:text-saffron"
+                  >
+                    {t(nav.nameKey)}
+                  </a>
+                ))}
 
-            {/* Contact Me Button - Mobile */}
-            <button
-              onClick={handleContactClick}
-              className="px-8 py-3 bg-indigo-600 text-white font-semibold rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-950 transition-all duration-300 shadow-md hover:shadow-lg text-lg"
-              aria-label={t('nav.contactMe')}
-            >
-              {t('nav.contactMe')}
-            </button>
-          </div>
-        </div>
-      )}
-    </nav>
+                <div className="mt-6 flex items-center gap-3">
+                  <a
+                    href="#contact"
+                    onClick={closeMenu}
+                    className="pressable flex min-h-12 flex-1 items-center justify-center rounded-full bg-saffron px-6 font-semibold text-ink"
+                  >
+                    {t('nav.contactMe')}
+                  </a>
+                  <button
+                    onClick={toggleLanguage}
+                    className="pressable flex min-h-12 min-w-12 items-center justify-center rounded-full border border-paper/20 font-mono text-sm text-paper"
+                    aria-label={t('nav.switchLanguage')}
+                  >
+                    {language === 'fr' ? 'EN' : 'FR'}
+                  </button>
+                </div>
+              </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
+    </header>
   );
 }
 
