@@ -13,7 +13,6 @@ const getProjects = (t) => [
     ...t('projects.claireFontaine'),
     link: "https://www.claire-fontaine.org/",
     host: "claire-fontaine.org",
-    techs: ["Next.js", "Google Maps"],
     image: {
       src: "./assets/projects/claire-fontaine.webp",
       width: 1600,
@@ -25,7 +24,6 @@ const getProjects = (t) => [
     ...t('projects.lakanaPlus'),
     link: "https://lakanaplus.netlify.app/",
     host: "lakanaplus.netlify.app",
-    techs: ["Next.js", "Netlify"],
     image: {
       src: "./assets/projects/lakana-plus.webp",
       width: 1600,
@@ -35,20 +33,17 @@ const getProjects = (t) => [
   },
   {
     ...t('projects.documali'),
-    link: "https://documali.vercel.app/",
-    techs: ["Flutter", "Next.js", "Tailwind CSS", "Firebase", "Cloudflare"],
+    link: "https://documali.net/",
     Vignette: ChecklistVignette,
   },
   {
     ...t('projects.evimo'),
     link: "https://apkpure.com/p/com.malladev.evimomobile",
-    techs: ["Flutter", "Dart", "Firebase", "Firebase Admin SDK", "Flutter Secure Storage"],
     Vignette: TicketVignette,
   },
   {
     ...t('projects.telecelUssd'),
     link: "https://apkpure.com/p/com.malladev.telecel_ussd",
-    techs: ["Flutter", "Dart", "Shared Preferences", "USSD"],
     Vignette: DialVignette,
   },
 ];
@@ -88,13 +83,15 @@ function ProjectCard({ project, index, onFocus, className }) {
         <h3 className="text-step mt-5">{project.title}</h3>
         <p className="mt-4 leading-relaxed text-paper-muted">{project.description}</p>
 
-        <ul className="mt-6 flex flex-wrap gap-2 font-mono text-xs">
-          {[...project.techs, ...(project.features ?? [])].map((tech) => (
-            <li key={tech} className="rounded-full border border-paper/15 px-3 py-1 text-paper-muted">
-              {tech}
-            </li>
-          ))}
-        </ul>
+        {project.features && (
+          <ul className="mt-6 flex flex-wrap gap-2 font-mono text-xs">
+            {project.features.map((feature) => (
+              <li key={feature} className="rounded-full border border-paper/15 px-3 py-1 text-paper-muted">
+                {feature}
+              </li>
+            ))}
+          </ul>
+        )}
 
         <p className="mt-auto flex items-center gap-1 pt-8 font-medium text-saffron">
           {t('projects.visit')}
@@ -122,7 +119,7 @@ const Heading = () => {
   const { t } = useLanguage();
   return (
     <>
-      <SectionLabel index="03">{t('projects.label')}</SectionLabel>
+      <SectionLabel index="04">{t('projects.label')}</SectionLabel>
       <motion.h2 {...reveal()} className="text-section mt-6">
         {t('projects.title')}
       </motion.h2>
