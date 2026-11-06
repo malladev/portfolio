@@ -1,31 +1,26 @@
+const defaultTheme = require("tailwindcss/defaultTheme");
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
+  // Hover styles only apply on devices that really hover, so they never stick after a tap.
+  future: {
+    hoverOnlyWhenSupported: true,
+  },
   theme: {
     extend: {
-      animation: {
-        scroll:
-          "scroll var(--animation-duration, 40s) var(--animation-direction, forwards) linear infinite",
-        spotlight: "spotlight 2s ease .75s 1 forwards",
+      colors: {
+        ink: { DEFAULT: "#0B0B0F", raised: "#131318", line: "#26262E" },
+        paper: { DEFAULT: "#EFE9DD", muted: "#A9A59A" },
+        saffron: "#FFB52E",
+        iris: "#7C4DFF",
       },
-      keyframes: {
-        scroll: {
-          to: {
-            transform: "translate(calc(-50% - 0.5rem))",
-          },
-        },
-        spotlight: {
-          "0%": {
-            opacity: 0,
-            transform: "translate(-72%, -62%) scale(0.5)",
-          },
-          "100%": {
-            opacity: 1,
-            transform: "translate(-50%,-40%) scale(1)",
-          },
-        },
+      fontFamily: {
+        sans: ["Bricolage Grotesque", ...defaultTheme.fontFamily.sans],
+        serif: ["Instrument Serif", ...defaultTheme.fontFamily.serif],
+        mono: ["JetBrains Mono", ...defaultTheme.fontFamily.mono],
       },
     },
-    plugins: [],
-  }
-}
+  },
+  plugins: [],
+};

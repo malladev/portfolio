@@ -2,81 +2,146 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Optimized Google Fonts - Only load necessary weights (400, 500, 600, 700) */
-/* Preload and font-display: swap are handled in index.html */
-
-* {
-  font-family: "Poppins", sans-serif;
-}
-
-body {
-  background-color: white;
-  scroll-behavior: smooth;
-}
-
-/* Performance optimizations */
-* {
+html {
+  background-color: #0b0b0f;
+  color: #efe9dd;
+  /* Keeps anchor targets clear of the floating navigation */
+  scroll-padding-top: 6rem;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  font-optical-sizing: auto;
 }
 
-img {
-  content-visibility: auto;
+/* Smooth anchors live here so the OS setting is honoured without any JS */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
 }
 
-/* Accessibility improvements */
-:focus-visible {
-  outline: 2px solid rgb(99, 102, 241);
-  outline-offset: 2px;
+/* Drafting table: crosshair marks every 96px, fixed behind the whole page */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='96' height='96'%3E%3Cpath d='M48 44v8M44 48h8' stroke='%23EFE9DD' stroke-opacity='.11'/%3E%3C/svg%3E");
 }
 
-/* Skip to main content for screen readers */
-.skip-to-main {
-  position: absolute;
-  left: -9999px;
-  z-index: 999;
-  padding: 1em;
-  background-color: rgb(99, 102, 241);
-  color: white;
-  text-decoration: none;
-}
-
-.skip-to-main:focus {
-  left: 50%;
-  transform: translateX(-50%);
-  top: 1em;
+#root {
+  position: relative;
+  z-index: 1;
 }
 
 ::selection {
-  background-color: rgb(92, 119, 255);
-  color: white;
+  background-color: #ffb52e;
+  color: #0b0b0f;
 }
 
-.white-icon {
-  filter: brightness(0) invert(1);
-}
-.black-icon {
-  filter: brightness(0);
-}
-.gray-icon {
-  filter: brightness(0.2);
+:focus-visible {
+  outline: 2px solid #ffb52e;
+  outline-offset: 3px;
 }
 
-/* Shimmer animation for skill bars */
-@keyframes shimmer {
-  0% {
-    transform: translateX(-100%);
+/* Programmatic focus targets (skip link) need no ring */
+[tabindex="-1"]:focus-visible {
+  outline: none;
+}
+
+.skip-to-main {
+  position: fixed;
+  left: -9999px;
+  z-index: 999;
+  padding: 0.75em 1em;
+  border-radius: 0.5rem;
+  background-color: #ffb52e;
+  color: #0b0b0f;
+  font-weight: 600;
+}
+
+.skip-to-main:focus {
+  left: 1rem;
+  top: 1rem;
+}
+
+/* Type scale: tracking tightens and leading closes as size grows */
+.text-hero {
+  font-size: clamp(2.75rem, 1rem + 6.8vw, 7.5rem);
+  line-height: 1;
+  letter-spacing: -0.032em;
+  font-weight: 600;
+}
+
+.text-section {
+  font-size: clamp(2.25rem, 1.2rem + 3.6vw, 4.75rem);
+  line-height: 1.04;
+  letter-spacing: -0.028em;
+  font-weight: 600;
+}
+
+.text-step {
+  font-size: clamp(2rem, 1.4rem + 2.2vw, 3.5rem);
+  line-height: 1.06;
+  letter-spacing: -0.024em;
+  font-weight: 600;
+}
+
+.text-outline {
+  color: transparent;
+  -webkit-text-stroke: 1px #efe9dd;
+}
+
+/* Translucent chrome: content scrolls underneath the navigation */
+.nav-material {
+  background-color: rgb(11 11 15 / 0.72);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  backdrop-filter: blur(20px) saturate(180%);
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .nav-material {
+    background-color: #0b0b0f;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
   }
-  100% {
-    transform: translateX(100%);
+}
+
+@media (prefers-contrast: more) {
+  .nav-material {
+    background-color: #0b0b0f;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    border-color: #efe9dd;
   }
 }
 
-.animate-shimmer {
-  animation: shimmer 2s infinite;
+/* Instant feedback on press, before the click commits */
+.pressable {
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  transition: transform 100ms ease-out, color 200ms ease, background-color 200ms ease,
+    border-color 200ms ease, box-shadow 200ms ease;
 }
 
-/* Reduced motion for accessibility */
+.pressable:active {
+  transform: scale(0.97);
+}
+
+/* Caret that settles down after a few blinks instead of blinking forever */
+.caret {
+  animation: caret 1s steps(2, jump-none) 6 both;
+}
+
+@keyframes caret {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -86,25 +151,8 @@ img {
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
-}
 
-/* Performance: GPU acceleration for transforms */
-.will-change-transform {
-  will-change: transform;
-}
-
-/* Loading states */
-.skeleton {
-  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
-  background-size: 200% 100%;
-  animation: loading 1.5s ease-in-out infinite;
-}
-
-@keyframes loading {
-  0% {
-    background-position: 200% 0;
-  }
-  100% {
-    background-position: -200% 0;
+  .caret {
+    display: none;
   }
 }

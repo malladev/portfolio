@@ -3,3 +3,33 @@
 // expect(element).toHaveTextContent(/react/i)
 // learn more: https://github.com/testing-library/jest-dom
 import '@testing-library/jest-dom';
+
+const MockIntersectionObserver = class IntersectionObserver {
+  constructor() {}
+  disconnect() {}
+  observe() {}
+  unobserve() {}
+  takeRecords() {
+    return [];
+  }
+};
+
+// Server-side tests run in the node environment, where there is no window to set up
+if (typeof window !== 'undefined') {
+  global.IntersectionObserver = MockIntersectionObserver;
+  window.IntersectionObserver = MockIntersectionObserver;
+
+  Object.defineProperty(window, 'matchMedia', {
+    writable: true,
+    value: (query) => ({
+      matches: false,
+      media: query,
+      onchange: null,
+      addListener: () => {},
+      removeListener: () => {},
+      addEventListener: () => {},
+      removeEventListener: () => {},
+      dispatchEvent: () => false,
+    }),
+  });
+}
